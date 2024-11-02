@@ -18,6 +18,54 @@ public class Descuento {
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public OperacionFactoring getOperacionFactoring() {
+        return operacionFactoring;
+    }
+
+    public void setOperacionFactoring(OperacionFactoring operacionFactoring) {
+        this.operacionFactoring = operacionFactoring;
+    }
+
+    public TasaEfectiva getTasaEfectivaDescuento() {
+        return tasaEfectivaDescuento;
+    }
+
+    public void setTasaEfectivaDescuento(TasaEfectiva tasaEfectivaDescuento) {
+        this.tasaEfectivaDescuento = tasaEfectivaDescuento;
+    }
+
+    public TasaNominal getTasaNominalDescuento() {
+        return tasaNominalDescuento;
+    }
+
+    public void setTasaNominalDescuento(TasaNominal tasaNominalDescuento) {
+        this.tasaNominalDescuento = tasaNominalDescuento;
+    }
+
+    public Comision getComisionDescuento() {
+        return comisionDescuento;
+    }
+
+    public void setComisionDescuento(Comision comisionDescuento) {
+        this.comisionDescuento = comisionDescuento;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
     //relacion comisiones
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="idComision" ,nullable=false)

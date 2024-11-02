@@ -31,6 +31,78 @@ public class ClienteProveedor {
     @Column(name = "fechaRegistro", nullable = false)
     private LocalDate fechaRegistro;
 
+    public String getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+
+    public List<Factura> getFacturasCliente() {
+        return facturasCliente;
+    }
+
+    public void setFacturasCliente(List<Factura> facturasCliente) {
+        this.facturasCliente = facturasCliente;
+    }
+
+    public List<CarteraTcea> getCarteraTceas() {
+        return carteraTceas;
+    }
+
+    public void setCarteraTceas(List<CarteraTcea> carteraTceas) {
+        this.carteraTceas = carteraTceas;
+    }
+
+    public Usuario getUserCliente() {
+        return userCliente;
+    }
+
+    public void setUserCliente(Usuario userCliente) {
+        this.userCliente = userCliente;
+    }
+
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getTelefonoEmpresa() {
+        return telefonoEmpresa;
+    }
+
+    public void setTelefonoEmpresa(String telefonoEmpresa) {
+        this.telefonoEmpresa = telefonoEmpresa;
+    }
+
+    public String getCorreoEmpresa() {
+        return correoEmpresa;
+    }
+
+    public void setCorreoEmpresa(String correoEmpresa) {
+        this.correoEmpresa = correoEmpresa;
+    }
+
+    public String getDireccionEmpresa() {
+        return direccionEmpresa;
+    }
+
+    public void setDireccionEmpresa(String direccionEmpresa) {
+        this.direccionEmpresa = direccionEmpresa;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
+    }
+
     //relacion-usuario
     @OneToOne
     @JoinColumn(name="idUsuario",nullable=false)

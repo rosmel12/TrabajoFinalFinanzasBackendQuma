@@ -30,6 +30,62 @@ public class ClienteDeudor {
     @Column(name = "fechaRegistro", nullable = false)
     private LocalDate fechaRegistro;
 
+    public String getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+
+    public List<Factura> getFacturasCliente() {
+        return facturasCliente;
+    }
+
+    public void setFacturasCliente(List<Factura> facturasCliente) {
+        this.facturasCliente = facturasCliente;
+    }
+
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getCorreoEmpresa() {
+        return correoEmpresa;
+    }
+
+    public void setCorreoEmpresa(String correoEmpresa) {
+        this.correoEmpresa = correoEmpresa;
+    }
+
+    public String getTelefonoEmpresa() {
+        return telefonoEmpresa;
+    }
+
+    public void setTelefonoEmpresa(String telefonoEmpresa) {
+        this.telefonoEmpresa = telefonoEmpresa;
+    }
+
+    public String getDireccionEmpresa() {
+        return direccionEmpresa;
+    }
+
+    public void setDireccionEmpresa(String direccionEmpresa) {
+        this.direccionEmpresa = direccionEmpresa;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
+    }
+
     //relacion factura
     @OneToMany(mappedBy = "deudorFactura",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Factura> facturasCliente;

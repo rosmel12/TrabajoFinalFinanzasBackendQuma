@@ -19,4 +19,27 @@ public class Periodo {
     @Column(name = "plazoDIas", nullable = false)
     private int plazoDIas;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getPlazoDIas() {
+        return plazoDIas;
+    }
+
+    public void setPlazoDIas(int plazoDIas) {
+        this.plazoDIas = plazoDIas;
+    }
+
+    public String getPlazoTasa() {
+        return plazoTasa;
+    }
+
+    public void setPlazoTasa(String plazoTasa) {
+        this.plazoTasa = plazoTasa;
+    }
 }

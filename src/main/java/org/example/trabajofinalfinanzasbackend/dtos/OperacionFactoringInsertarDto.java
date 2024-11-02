@@ -12,4 +12,20 @@ import lombok.Setter;
 public class OperacionFactoringInsertarDto {
     private Integer idDescuento;
     private Integer idFactura;
+
+    public Integer getIdDescuento() {
+        return idDescuento;
+    }
+
+    public void setIdDescuento(Integer idDescuento) {
+        this.idDescuento = idDescuento;
+    }
+
+    public Integer getIdFactura() {
+        return idFactura;
+    }
+
+    public void setIdFactura(Integer idFactura) {
+        this.idFactura = idFactura;
+    }
 }

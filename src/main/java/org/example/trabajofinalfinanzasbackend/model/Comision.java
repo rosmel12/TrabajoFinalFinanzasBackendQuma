@@ -26,6 +26,54 @@ public class Comision {
     @Column(name = "moneda", nullable = false, unique = true)
     private String moneda;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<Descuento> getDescuentos() {
+        return descuentos;
+    }
+
+    public void setDescuentos(List<Descuento> descuentos) {
+        this.descuentos = descuentos;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
+    public double getRetencion() {
+        return retencion;
+    }
+
+    public void setRetencion(double retencion) {
+        this.retencion = retencion;
+    }
+
+    public double getEnvio() {
+        return envio;
+    }
+
+    public void setEnvio(double envio) {
+        this.envio = envio;
+    }
+
+    public double getSeguro() {
+        return seguro;
+    }
+
+    public void setSeguro(double seguro) {
+        this.seguro = seguro;
+    }
+
     //relacion descuento
     @OneToMany(mappedBy = "comisionDescuento",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Descuento> descuentos;

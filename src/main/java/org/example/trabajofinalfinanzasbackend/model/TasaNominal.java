@@ -31,6 +31,62 @@ public class TasaNominal {
     @Column(name = "fechaFin", nullable = false)
     private LocalDateTime fechaFin;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<Descuento> getDescuentos() {
+        return descuentos;
+    }
+
+    public void setDescuentos(List<Descuento> descuentos) {
+        this.descuentos = descuentos;
+    }
+
+    public LocalDateTime getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDateTime fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDateTime getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDateTime fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getCapitalizable() {
+        return capitalizable;
+    }
+
+    public void setCapitalizable(String capitalizable) {
+        this.capitalizable = capitalizable;
+    }
+
+    public String getPlazo() {
+        return plazo;
+    }
+
+    public void setPlazo(String plazo) {
+        this.plazo = plazo;
+    }
+
+    public double getTasaInteres() {
+        return tasaInteres;
+    }
+
+    public void setTasaInteres(double tasaInteres) {
+        this.tasaInteres = tasaInteres;
+    }
+
     //relacion descuento
     @OneToMany(mappedBy = "tasaNominalDescuento",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Descuento> descuentos;

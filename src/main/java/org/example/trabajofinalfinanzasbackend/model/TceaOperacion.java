@@ -21,6 +21,38 @@ public class TceaOperacion {
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public OperacionFactoring getTceaOperacionFactoring() {
+        return tceaOperacionFactoring;
+    }
+
+    public void setTceaOperacionFactoring(OperacionFactoring tceaOperacionFactoring) {
+        this.tceaOperacionFactoring = tceaOperacionFactoring;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public double getTcea() {
+        return tcea;
+    }
+
+    public void setTcea(double tcea) {
+        this.tcea = tcea;
+    }
+
     //relacion operacion_Factoring
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="idOperacionFactoring" ,nullable=false)

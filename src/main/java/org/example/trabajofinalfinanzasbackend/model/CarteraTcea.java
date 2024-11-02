@@ -24,6 +24,46 @@ public class CarteraTcea {
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public ClienteProveedor getProveedorCartera() {
+        return proveedorCartera;
+    }
+
+    public void setProveedorCartera(ClienteProveedor proveedorCartera) {
+        this.proveedorCartera = proveedorCartera;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
+
+    public double getTcea() {
+        return tcea;
+    }
+
+    public void setTcea(double tcea) {
+        this.tcea = tcea;
+    }
+
     //relacion-cliente_proveeddor
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rucCliente",nullable=false)

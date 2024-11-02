@@ -33,6 +33,86 @@ public class Factura {
     @Column(name = "fechaVencimiento", nullable = false)
     private LocalDate fechaVencimiento;
 
+    public OperacionFactoring getOperacionFactoring() {
+        return operacionFactoring;
+    }
+
+    public void setOperacionFactoring(OperacionFactoring operacionFactoring) {
+        this.operacionFactoring = operacionFactoring;
+    }
+
+    public ClienteDeudor getDeudorFactura() {
+        return deudorFactura;
+    }
+
+    public void setDeudorFactura(ClienteDeudor deudorFactura) {
+        this.deudorFactura = deudorFactura;
+    }
+
+    public ClienteProveedor getProveedorFactura() {
+        return proveedorFactura;
+    }
+
+    public void setProveedorFactura(ClienteProveedor proveedorFactura) {
+        this.proveedorFactura = proveedorFactura;
+    }
+
+    public LocalDate getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(LocalDate fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public LocalDate getFechaEmision() {
+        return fechaEmision;
+    }
+
+    public void setFechaEmision(LocalDate fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
+    public double getMontoTotalIgv() {
+        return montoTotalIgv;
+    }
+
+    public void setMontoTotalIgv(double montoTotalIgv) {
+        this.montoTotalIgv = montoTotalIgv;
+    }
+
+    public double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
     //relacion-Cliente_proveedor
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rucClienteProveedor" ,nullable=false)

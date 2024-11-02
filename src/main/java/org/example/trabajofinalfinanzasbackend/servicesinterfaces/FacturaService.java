@@ -40,10 +40,16 @@ public class FacturaService {
         List<FacturaDto> facturas=new ArrayList<>();
         if(facturasAux!=null){
             for(Factura facturaAux:facturasAux){
-                FacturaDto facturaDtoAux=new FacturaDto(facturaAux.getId(),facturaAux.getNumero(),
-                        facturaAux.getMontoTotal(),facturaAux.getMontoTotalIgv(),facturaAux.getMoneda(),
-                        facturaAux.getFechaEmision(),facturaAux.getFechaVencimiento(),facturaAux.getProveedorFactura().getRuc(),
-                        facturaAux.getDeudorFactura().getRuc());
+                FacturaDto facturaDtoAux=new FacturaDto();
+                facturaDtoAux.setId(facturaAux.getId());
+                facturaDtoAux.setNumero(facturaAux.getNumero());
+                facturaDtoAux.setMontoTotal(facturaAux.getMontoTotal());
+                facturaDtoAux.setMontoTotalIgv(facturaAux.getMontoTotalIgv());
+                facturaDtoAux.setMoneda(facturaAux.getMoneda());
+                facturaDtoAux.setFechaEmision(facturaAux.getFechaEmision());
+                facturaDtoAux.setFechaVencimiento(facturaAux.getFechaVencimiento());
+                facturaDtoAux.setRucClienteProveedor(facturaAux.getProveedorFactura().getRuc());
+                facturaDtoAux.setRucClienteDeudor(facturaAux.getDeudorFactura().getRuc());
                 facturas.add(facturaDtoAux);
             }
             return facturas;

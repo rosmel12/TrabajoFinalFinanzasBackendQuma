@@ -58,10 +58,10 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                //.requestMatchers("/quma/**").permitAll()
-                                .requestMatchers("/quma/login","/quma/register").permitAll()
-                                .requestMatchers("/quma/*/usuario/**").hasAuthority("CLIENTE")
-                                .anyRequest().authenticated()
+                                .requestMatchers("/quma/**").permitAll()
+                                //.requestMatchers("/quma/login","/quma/register").permitAll()
+                                //.requestMatchers("/quma/*/usuario/**").hasAuthority("CLIENTE")
+                                //.anyRequest().authenticated()
                 ).exceptionHandling(authentication ->
                         authentication.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )

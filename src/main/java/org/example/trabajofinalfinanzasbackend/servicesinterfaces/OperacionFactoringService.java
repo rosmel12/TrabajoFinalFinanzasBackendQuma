@@ -2,7 +2,10 @@ package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
 import org.example.trabajofinalfinanzasbackend.dtos.OperacionFactoringInsertarDto;
 import org.example.trabajofinalfinanzasbackend.model.*;
-import org.example.trabajofinalfinanzasbackend.repositories.*;
+import org.example.trabajofinalfinanzasbackend.repositories.DescuentoRepository;
+import org.example.trabajofinalfinanzasbackend.repositories.FacturaRepository;
+import org.example.trabajofinalfinanzasbackend.repositories.OperacionFactoringRepository;
+import org.example.trabajofinalfinanzasbackend.repositories.PeriodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

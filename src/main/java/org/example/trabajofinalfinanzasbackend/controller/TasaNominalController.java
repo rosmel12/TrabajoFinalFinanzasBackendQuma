@@ -1,8 +1,6 @@
 package org.example.trabajofinalfinanzasbackend.controller;
 
-import org.example.trabajofinalfinanzasbackend.dtos.TasaEfectivaDto;
 import org.example.trabajofinalfinanzasbackend.dtos.TasaNominalDto;
-import org.example.trabajofinalfinanzasbackend.model.TasaEfectiva;
 import org.example.trabajofinalfinanzasbackend.model.TasaNominal;
 import org.example.trabajofinalfinanzasbackend.servicesinterfaces.TasaNominalService;
 import org.modelmapper.ModelMapper;

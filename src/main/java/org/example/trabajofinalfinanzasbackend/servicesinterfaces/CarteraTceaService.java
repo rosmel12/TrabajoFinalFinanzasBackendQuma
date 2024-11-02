@@ -6,6 +6,7 @@ import org.example.trabajofinalfinanzasbackend.repositories.CarteraTceaRepositor
 import org.example.trabajofinalfinanzasbackend.repositories.ClienteProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -26,25 +27,29 @@ public class CarteraTceaService {
         CarteraTcea tceadia= carteraTceaRepository.carteraTceaDia(ruc);
         ///verificamos la existencia de la cartera de un dia
         if(tceadia==null){
-            CarteraTcea carteraTcea = new CarteraTcea();
             ClienteProveedor proveedor = clienteProveedorRepository.findById(ruc).orElse(null);
-            carteraTcea.setTcea(tir);
-            carteraTcea.setFecha(LocalDateTime.now());
-            carteraTcea.setMonto(calcularInversion(flujos));
-            carteraTcea.setProveedorCartera(proveedor);
-            carteraTceaRepository.save(carteraTcea);
+            if (proveedor != null) {
+                CarteraTcea carteraTcea = new CarteraTcea();
+                carteraTcea.setTcea(tir);
+                carteraTcea.setFecha(LocalDateTime.now());
+                carteraTcea.setMonto(calcularInversion(flujos));
+                carteraTcea.setProveedorCartera(proveedor);
+                carteraTceaRepository.save(carteraTcea);
+            }
             //return "se una nueva cartera de tcea del dia";
-        }else {
+        }
+        else {
             tceadia.setFecha(LocalDateTime.now());
             tceadia.setMonto(calcularInversion(flujos));
             tceadia.setTcea(tir);
             carteraTceaRepository.save(tceadia);
             //return "se modifico la cartera existente del dia";
         }
+
         return "TIR: " + tir;}
         return "no se puedo encontrar flujos";
     }
-    
+
     ///caculamos el tir mediante el algoritmo binomial
     private double calcularTIR(List<Object[]> flujos) {
         double inversion = calcularInversion(flujos );
@@ -104,8 +109,6 @@ public class CarteraTceaService {
         }
         return inversion;
     }
-
-
 
     public List<CarteraTcea> getCarteraTcea(String rucCliente){return carteraTceaRepository.findByRuc(rucCliente);}
 

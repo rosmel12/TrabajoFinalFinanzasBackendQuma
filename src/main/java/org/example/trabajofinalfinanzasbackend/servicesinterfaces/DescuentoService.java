@@ -26,8 +26,6 @@ public class DescuentoService {
     private TasaNominalRepository tasaNominalRepository;
     @Autowired
     private TasaEfectivaRepository tasaEfectivaRepository;
-    @Autowired
-    private OperacionFactoringService operacionFactoringService;
 
     public Integer insertDescuento(DescuentoDto descuentoDto, Descuento descuento) {
         Comision comision =comisionRepository.findById(descuentoDto.getIdComision()).orElse(null) ;

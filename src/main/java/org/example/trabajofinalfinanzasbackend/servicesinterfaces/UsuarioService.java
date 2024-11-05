@@ -25,6 +25,7 @@ public class UsuarioService {
         }
        return null;
     }
+
     public Usuario buscarUsuario(String username) {
         return usuarioRepository.findUsuarioByUsername(username);
     }

@@ -22,6 +22,7 @@ public class TceaOperacionService {
         tceaOperacionRepository.save(tceaOperacion);
         return "la tcea se agrego correctmente";
     }
+
     private double calcularTceaOperacion(int DiasOperacion, double MontoOperacionPagado,double MontoTotal) {
         double tceaOperacion = (Math.pow(MontoTotal/MontoOperacionPagado, (double) 360/DiasOperacion))-1;
         return tceaOperacion;

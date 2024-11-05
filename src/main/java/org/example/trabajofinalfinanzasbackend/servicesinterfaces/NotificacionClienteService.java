@@ -21,6 +21,7 @@ public void enviarNotificacionCliente(OperacionFactoring operacionFactoring) {
  notificacionCliente.setNotificacionOperacionFactoring(operacionFactoring);
  notificacionClienteRepository.save(notificacionCliente);
     }
+
 public String modificarEstadoNotificacionCliente( Integer id) {
   NotificacionCliente notificacionCliente = notificacionClienteRepository.findById(id).orElse(null);
   if(notificacionCliente != null) {

@@ -15,7 +15,10 @@ public String insertComision(Comision comision) {
     return " se agrego la comision";
 }
 public Integer comisionId(String moneda){
-return comisionRepository.findComisionModeda(moneda).getId();
+return comisionRepository.findComisionMoneda(moneda).getId();
+}
+public Comision comisionMoneda(String moneda){
+    return comisionRepository.findComisionMoneda(moneda);
 }
 
 }

@@ -31,4 +31,11 @@ public class ComisionController {
     public Integer comisionId(@PathVariable String moneda){
         return comisionService.comisionId(moneda);
     }
+
+    @GetMapping("/usuario/obtenido/{moneda}")
+    public ComisionDto listarComision(@PathVariable String moneda){
+        ModelMapper modelMapper = new ModelMapper();
+        Comision comision=comisionService.comisionMoneda(moneda);
+        return modelMapper.map(comision, ComisionDto.class);
+    }
 }

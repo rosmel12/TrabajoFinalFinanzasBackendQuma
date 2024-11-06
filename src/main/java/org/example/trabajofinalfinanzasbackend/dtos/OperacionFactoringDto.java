@@ -15,9 +15,15 @@ import java.time.LocalDateTime;
 public class OperacionFactoringDto {
     private Integer id;
     private LocalDateTime fechaOperacion;
-    private double tasaInteresAplicada;
-    private double montoDescuento;
-    private double montoPago;
-    private Integer idFactura;
-    private Integer idDescuento;
+    private double valorNominal;
+    private int numeroDias;
+    private double tasaEfectivaAplicada;
+    private double tasaDescuento;
+    private double descuento;
+    private double costesIniciales;
+    private double costesFinales;
+    private double valorNeto;
+    private double valorRecibido;
+    private double valorEntregado;
+
 }

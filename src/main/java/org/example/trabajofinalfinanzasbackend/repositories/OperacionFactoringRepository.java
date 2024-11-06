@@ -24,4 +24,9 @@ OperacionFactoring operacionFactura(@Param("id")Integer id);
         "order by ofc.id desc",nativeQuery = true)
 List<OperacionFactoring> operacionesCliente(@Param("ruc") String ruc);
 
+@Query(value = "select ofc.*\n" +
+        "from factura fc\n" +
+        "join operacionfactoring ofc on ofc.id_factura=fc.id\n" +
+        "where fc.ruc_cliente_proveedor=:ruc AND DATE(ofc.fecha_operacion) = CURDATE();",nativeQuery = true)
+List<OperacionFactoring> findOperacionesHoy(@Param("ruc") String ruc);
 }

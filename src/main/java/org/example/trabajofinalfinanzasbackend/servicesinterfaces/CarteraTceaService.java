@@ -2,11 +2,15 @@ package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
 import org.example.trabajofinalfinanzasbackend.model.CarteraTcea;
 import org.example.trabajofinalfinanzasbackend.model.ClienteProveedor;
+import org.example.trabajofinalfinanzasbackend.model.OperacionFactoring;
 import org.example.trabajofinalfinanzasbackend.repositories.CarteraTceaRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.ClienteProveedorRepository;
+import org.example.trabajofinalfinanzasbackend.repositories.OperacionFactoringRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -18,10 +22,11 @@ public class CarteraTceaService {
     private CarteraTceaRepository carteraTceaRepository;
     @Autowired
     private ClienteProveedorRepository clienteProveedorRepository;
-
+    @Autowired
+    private OperacionFactoringRepository operacionFactoringRepository;
     public String insertarCarteraTcea(String ruc) {
 
-        List<Object[]> flujos =carteraTceaRepository.flujos(ruc);
+        List<OperacionFactoring> flujos =operacionFactoringRepository.findOperacionesHoy(ruc);
         if (!flujos.isEmpty()) {
         double tir = calcularTIR(flujos);
         CarteraTcea tceadia= carteraTceaRepository.carteraTceaDia(ruc);
@@ -51,7 +56,7 @@ public class CarteraTceaService {
     }
 
     ///caculamos el tir mediante el algoritmo binomial
-    private double calcularTIR(List<Object[]> flujos) {
+    private double calcularTIR(List<OperacionFactoring> flujos) {
         double inversion = calcularInversion(flujos );
 
         double tirLow = -1.0;    // Límite inferior de la TIR
@@ -78,17 +83,17 @@ public class CarteraTceaService {
             }
         }
         // Si el VAN está lo suficientemente cerca de cero, retorna el TIR actual
-        return tirMid;
+        BigDecimal tasaRedondeada = BigDecimal.valueOf(tirMid).setScale(9, RoundingMode.HALF_UP);
+        return tasaRedondeada.doubleValue();
     }
 
     ///calculamos el van
-    private double calcularVAN( List<Object[]> flujos , double inversion, double tir) {
+    private double calcularVAN( List<OperacionFactoring> flujos , double inversion, double tir) {
         double van=-inversion;
-        for (Object[] flujo : flujos) {
-            java.sql.Date sqlDate = (java.sql.Date) flujo[0];
-            LocalDate fechaVencimiento = sqlDate.toLocalDate();
+        for (OperacionFactoring flujo : flujos) {
+            LocalDate fechaVencimiento = flujo.getFacturaOperacion().getFechaVencimiento();
             int dias= calcularDias(fechaVencimiento);
-            double flujoPago= (double) flujo[3];
+            double flujoPago= flujo.getValorRecibido();
             van += flujoPago / Math.pow((1 + tir), (dias / 360.0));
         }
         return van;
@@ -102,10 +107,10 @@ public class CarteraTceaService {
     }
 
     ///calcular inversion que es la suma de los montos sin igv de la factura
-    private double calcularInversion(List<Object[]> flujos ) {
+    private double calcularInversion(List<OperacionFactoring> flujos ) {
         double inversion=0.0;
-        for(Object[] flujo : flujos) {
-            inversion += (double) flujo[1];
+        for(OperacionFactoring flujo : flujos) {
+            inversion += flujo.getValorRecibido();
         }
         return inversion;
     }

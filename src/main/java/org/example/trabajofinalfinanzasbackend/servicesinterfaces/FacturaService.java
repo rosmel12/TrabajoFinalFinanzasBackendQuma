@@ -28,7 +28,7 @@ public class FacturaService {
         if (clienteDeudor != null && clienteProveedor != null) {
             factura.setDeudorFactura(clienteDeudor);
             factura.setProveedorFactura(clienteProveedor);
-            factura.setMontoTotal(0.82*factura.getMontoTotalIgv());
+            factura.setMontoTotal(factura.getMontoTotalIgv()/1.18);
             factura=facturaRepository.save(factura);
             return factura.getId();
         }

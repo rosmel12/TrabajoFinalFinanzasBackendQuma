@@ -9,6 +9,8 @@ import org.example.trabajofinalfinanzasbackend.repositories.PeriodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -32,9 +34,7 @@ private FacturaRepository facturaRepository;
 @Autowired
 private DescuentoRepository descuentoRepository;
 
-private int diasFactura=0;
-private double tep=0.0;
-private double montoDescuento=0.0;
+
 
  ///insertar operacion factoring
 public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactoringInsertarDto) {
@@ -45,24 +45,33 @@ public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactorin
         Comision comision= descuento.getComisionDescuento();
         TasaNominal tasaNominal= descuento.getTasaNominalDescuento();
         TasaEfectiva tasaEfectiva= descuento.getTasaEfectivaDescuento();
-        calcularDias(factura);
+        int diasFactura=calcularDias(factura);
+        double tep=0.0;
         if (tasaEfectiva != null) {
-            convertirTasaEfectivaEfectiva(tasaEfectiva);
+            tep=convertirTasaEfectivaEfectiva(tasaEfectiva, diasFactura);
         } else if (tasaNominal != null) {
-            convertirTasaNominalEfectiva(tasaNominal);
+            tep=convertirTasaNominalEfectiva(tasaNominal, diasFactura);
         }
+        ///creamos la operacion
         OperacionFactoring operacionFactoring = new OperacionFactoring();
         operacionFactoring.setFechaOperacion(LocalDateTime.now());
-        operacionFactoring.setTasaInteresAplicada(this.tep);
-        operacionFactoring.setMontoPago(calcularMontoDescuentoPago(factura,comision));
-        operacionFactoring.setMontoDescuento(this.montoDescuento);
+        operacionFactoring.setValorNominal(factura.getMontoTotal());
+        operacionFactoring.setNumeroDias(diasFactura);
+        operacionFactoring.setTasaEfectivaAplicada(tep);
+        operacionFactoring.setTasaDescuento(calcularTasaDescuento(tep));
+        operacionFactoring.setDescuento(calcularDescuento(factura,tep));
+        operacionFactoring.setCostesIniciales(calcularCostesIniciales(comision,factura));
+        operacionFactoring.setCostesFinales(calcularCostesFinales(comision));
+        operacionFactoring.setValorNeto(calcularValorNeto(factura,tep));
+        operacionFactoring.setValorRecibido(calcularValorRecibido(factura,comision,tep));
+        operacionFactoring.setValorEntregado(calcularValorEntrego(factura,comision,tep));
         operacionFactoring.setFacturaOperacion(factura);
         operacionFactoring.setDescuentoOperacion(descuento);
+
         ///creamos la operacion para la factura
         operacionFactoring = operacionFactoringRepository.save(operacionFactoring);
-        System.out.println(operacionFactoring);
         ///creamos la tcea de la operacion
-        tceaOperacionService.IngresarTceaOperacion(this.diasFactura,factura.getMontoTotal(), operacionFactoring);
+        tceaOperacionService.IngresarTceaOperacion(operacionFactoring);
         ///creamos la notificacion de la operacion
         notificacionClienteService.enviarNotificacionCliente(operacionFactoring);
         ///creamos la carteradel dia o actualizamos
@@ -76,39 +85,82 @@ public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactorin
 }
 
 ///Calculo de dias Factura
-private void calcularDias(Factura factura) {
+private int calcularDias(Factura factura) {
 /// Convertimos las fechas de Date a LocalDate
 LocalDate fechaInicio = LocalDate.from(factura.getFechaEmision());
 LocalDate fechaFin = LocalDate.from(factura.getFechaVencimiento());
 /// Calculamos la diferencia en días
-this.diasFactura =(int) ChronoUnit.DAYS.between(fechaInicio, fechaFin);
+return  (int) ChronoUnit.DAYS.between(fechaInicio, fechaFin);
 }
 
 ///Calculo las tasas a TEP
-private void convertirTasaEfectivaEfectiva(TasaEfectiva tasaEfectiva) {
+private double convertirTasaEfectivaEfectiva(TasaEfectiva tasaEfectiva, int diasFactura) {
     Periodo periodo = periodoRepository.findByPlazoTasa(tasaEfectiva.getPlazo());
-    this.tep= (Math.pow(1 +tasaEfectiva.getTasaInteres(), (double) diasFactura / periodo.getPlazoDIas()))-1;
+    ///calcular tep
+    double tasaCalculada = Math.pow(1 + tasaEfectiva.getTasaInteres(), (double) diasFactura / periodo.getPlazoDIas()) - 1;
+    BigDecimal tasaRedondeada = BigDecimal.valueOf(tasaCalculada).setScale(9, RoundingMode.HALF_UP);
+    return tasaRedondeada.doubleValue();
 }
-private void convertirTasaNominalEfectiva(TasaNominal tasaNominal) {
+private double convertirTasaNominalEfectiva(TasaNominal tasaNominal, int diasFactura) {
     Periodo periodo = periodoRepository.findByPlazoTasa(tasaNominal.getPlazo());
     Periodo periodoCapitalizable = periodoRepository.findByPlazoTasa(tasaNominal.getCapitalizable());
     ///calcular m y n
     double m = (double) periodo.getPlazoDIas() /periodoCapitalizable.getPlazoDIas();
-    double n= (double) this.diasFactura/periodoCapitalizable.getPlazoDIas();
+    double n= (double) diasFactura/periodoCapitalizable.getPlazoDIas();
     ///calcular tep
-    this.tep=(Math.pow(1+(tasaNominal.getTasaInteres()/m),n))-1;
+    double tasaCalculada= (Math.pow(1+(tasaNominal.getTasaInteres()/m),n))-1;
+    BigDecimal tasaRedondeada = BigDecimal.valueOf(tasaCalculada).setScale(9, RoundingMode.HALF_UP);
+    return tasaRedondeada.doubleValue();
 }
 
 ///Calculo TEPdescuento
-private double calcularTasaDescuento(){ return (this.tep)/(1+this.tep);}
-
-///Realizamos el calculo de la operacion de la factura
-private double calcularMontoDescuentoPago(Factura factura, Comision comision) {
-double montoDescuentoTasa = factura.getMontoTotal() * calcularTasaDescuento();
-this.montoDescuento = montoDescuentoTasa + comision.getEnvio() + comision.getSeguro() + ( factura.getMontoTotal() * comision.getRetencion() );
-return factura.getMontoTotal() - this.montoDescuento;
+private double calcularTasaDescuento(double tep ){
+    double tasaDescuentoCalculada= (tep)/(1+tep);
+    BigDecimal tasaRedondeada = BigDecimal.valueOf(tasaDescuentoCalculada).setScale(9, RoundingMode.HALF_UP);
+    return tasaRedondeada.doubleValue();
 }
 
+///Realizamos el calculo del decuento
+private double calcularDescuento(Factura factura,double tep) {
+double montoDescuentoTasa = factura.getMontoTotal() * calcularTasaDescuento(tep);
+BigDecimal montoRedondeado = BigDecimal.valueOf(montoDescuentoTasa).setScale(2, RoundingMode.HALF_UP);
+return montoRedondeado.doubleValue();
+}
+
+///Realizamos el calculo de lo costes iniciales
+private double calcularCostesIniciales(Comision comision,Factura factura){
+    double costesIniciales= comision.getEstudioRiesgo()+factura.getMontoTotal()*comision.getSeguroDesgravamen()+comision.getFotoCopias();
+    BigDecimal montoRedondeado = BigDecimal.valueOf(costesIniciales).setScale(2, RoundingMode.HALF_UP);
+    return montoRedondeado.doubleValue();
+}
+
+///Relizamos el calculo de los costes finales
+private double calcularCostesFinales(Comision comision){
+    double costesFinales= comision.getGastoAdministracion()+comision.getPorte();
+    BigDecimal montoRedondeado = BigDecimal.valueOf(costesFinales).setScale(2, RoundingMode.HALF_UP);
+    return montoRedondeado.doubleValue();
+}
+
+///calculamos el valor neto
+private double calcularValorNeto(Factura factura, double tep){
+    double valorNeto=factura.getMontoTotal()-calcularDescuento(factura,tep);
+    BigDecimal montoRedondeado = BigDecimal.valueOf(valorNeto).setScale(2, RoundingMode.HALF_UP);
+    return montoRedondeado.doubleValue();
+}
+
+///calculamos el valor recibido
+private double calcularValorRecibido(Factura factura,Comision comision, double tep){
+    double valorRecibido=calcularValorNeto(factura,tep)-calcularCostesIniciales(comision,factura);
+    BigDecimal montoRedondeado = BigDecimal.valueOf(valorRecibido).setScale(2, RoundingMode.HALF_UP);
+    return montoRedondeado.doubleValue();
+}
+
+///calculamos el valor entregado o flujos
+private double calcularValorEntrego(Factura factura,Comision comision, double tep){
+    double valorEntrego=calcularValorNeto(factura,tep)+calcularCostesFinales(comision);
+    BigDecimal montoRedondeado = BigDecimal.valueOf(valorEntrego).setScale(2, RoundingMode.HALF_UP);
+    return montoRedondeado.doubleValue();
+}
 
 ///listar operacion por factura
 public OperacionFactoring listaroperacionPorFactura(Integer idFactura) {

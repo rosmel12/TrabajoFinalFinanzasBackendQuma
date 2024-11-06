@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.geom.QuadCurve2D;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,86 +20,35 @@ public class OperacionFactoring {
     @Column(name = "fechaOperacion", nullable = false)
     private LocalDateTime fechaOperacion;
 
-    @Column(name = "tasaInteresAplicada", nullable = false)
-    private double tasaInteresAplicada;
+    @Column(name = "valorNominal", nullable = false)
+    private double valorNominal;
 
-    @Column(name = "montoDescuento", nullable = false)
-    private double montoDescuento;
+    @Column(name = "numeroDias" ,nullable=false)
+    private int numeroDias;
 
-    @Column(name = "montoPago", nullable = false)
-    private double montoPago;
+    @Column(name = "tasaEfectivaAplicada", nullable = false)
+    private double tasaEfectivaAplicada;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "tasaDescuento", nullable = false)
+    private double tasaDescuento;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "descuento", nullable = false)
+    private double descuento;
 
-    public List<NotificacionCliente> getNotificacionClientes() {
-        return notificacionClientes;
-    }
+    @Column(name = "costesIniciales", nullable = false)
+    private double costesIniciales;
 
-    public void setNotificacionClientes(List<NotificacionCliente> notificacionClientes) {
-        this.notificacionClientes = notificacionClientes;
-    }
+    @Column(name = "costesFinales", nullable = false)
+    private double costesFinales;
 
-    public List<TceaOperacion> getTceas() {
-        return tceas;
-    }
+    @Column(name = "valorNeto", nullable = false)
+    private double valorNeto;
 
-    public void setTceas(List<TceaOperacion> tceas) {
-        this.tceas = tceas;
-    }
+    @Column(name = "valorRecibido", nullable = false)
+    private double valorRecibido;
 
-    public Descuento getDescuentoOperacion() {
-        return descuentoOperacion;
-    }
-
-    public void setDescuentoOperacion(Descuento descuentoOperacion) {
-        this.descuentoOperacion = descuentoOperacion;
-    }
-
-    public Factura getFacturaOperacion() {
-        return facturaOperacion;
-    }
-
-    public void setFacturaOperacion(Factura facturaOperacion) {
-        this.facturaOperacion = facturaOperacion;
-    }
-
-    public double getMontoPago() {
-        return montoPago;
-    }
-
-    public void setMontoPago(double montoPago) {
-        this.montoPago = montoPago;
-    }
-
-    public double getMontoDescuento() {
-        return montoDescuento;
-    }
-
-    public void setMontoDescuento(double montoDescuento) {
-        this.montoDescuento = montoDescuento;
-    }
-
-    public double getTasaInteresAplicada() {
-        return tasaInteresAplicada;
-    }
-
-    public void setTasaInteresAplicada(double tasaInteresAplicada) {
-        this.tasaInteresAplicada = tasaInteresAplicada;
-    }
-
-    public LocalDateTime getFechaOperacion() {
-        return fechaOperacion;
-    }
-
-    public void setFechaOperacion(LocalDateTime fechaOperacion) {
-        this.fechaOperacion = fechaOperacion;
-    }
+    @Column(name = "valorEntregado", nullable = false)
+    private double valorEntregado;
 
     //relacion factura
     @OneToOne

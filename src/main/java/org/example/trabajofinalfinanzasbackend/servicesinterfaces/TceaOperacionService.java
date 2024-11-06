@@ -14,17 +14,17 @@ public class TceaOperacionService {
     @Autowired
     private TceaOperacionRepository tceaOperacionRepository;
 
-    public String IngresarTceaOperacion(int DiasOperacion,double MontoTotal, OperacionFactoring operacionFactoring) {
+    public String IngresarTceaOperacion(OperacionFactoring operacionFactoring) {
         TceaOperacion tceaOperacion = new TceaOperacion();
-        tceaOperacion.setTcea(calcularTceaOperacion(DiasOperacion,operacionFactoring.getMontoPago(),MontoTotal));
+        tceaOperacion.setTcea(calcularTceaOperacion(operacionFactoring.getNumeroDias(),operacionFactoring.getValorRecibido(),operacionFactoring.getValorEntregado()));
         tceaOperacion.setFecha(LocalDateTime.now());
         tceaOperacion.setTceaOperacionFactoring(operacionFactoring);
         tceaOperacionRepository.save(tceaOperacion);
         return "la tcea se agrego correctmente";
     }
 
-    private double calcularTceaOperacion(int DiasOperacion, double MontoOperacionPagado,double MontoTotal) {
-        double tceaOperacion = (Math.pow(MontoTotal/MontoOperacionPagado, (double) 360/DiasOperacion))-1;
+    private double calcularTceaOperacion(int diasFactura, double montoRecibido,double montoEntregado) {
+        double tceaOperacion = (Math.pow(montoEntregado/montoRecibido, (double) 360/diasFactura))-1;
         return tceaOperacion;
     }
 

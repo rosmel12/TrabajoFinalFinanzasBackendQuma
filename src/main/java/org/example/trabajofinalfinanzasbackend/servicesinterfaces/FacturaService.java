@@ -10,6 +10,8 @@ import org.example.trabajofinalfinanzasbackend.repositories.FacturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,9 @@ public class FacturaService {
         if (clienteDeudor != null && clienteProveedor != null) {
             factura.setDeudorFactura(clienteDeudor);
             factura.setProveedorFactura(clienteProveedor);
-            factura.setMontoTotal(factura.getMontoTotalIgv()/1.18);
+            double valorNominal=factura.getMontoTotalIgv()/1.18;
+            BigDecimal valorNominalRedondeada = BigDecimal.valueOf(valorNominal).setScale(2, RoundingMode.HALF_UP);
+            factura.setMontoTotal(valorNominalRedondeada.doubleValue());
             factura=facturaRepository.save(factura);
             return factura.getId();
         }

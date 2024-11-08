@@ -14,6 +14,7 @@ public class ClienteDeudorService {
 
     public String insertarClienteDeudor(ClienteDeudor clienteDeudor) {
         ClienteDeudor cliente =clienteDeudorRepository.findById(clienteDeudor.getRuc()).orElse(null);
+
         if(cliente==null) {
             clienteDeudorRepository.save(clienteDeudor);
             return "se crea el cliente  deudor";

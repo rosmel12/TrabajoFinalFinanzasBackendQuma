@@ -16,6 +16,7 @@ import java.util.List;
 public class ClienteDeudorController {
     @Autowired
     private ClienteDeudorService clienteDeudorService;
+
     @PostMapping("/usuario/insertar")
     public String createClienteDeudor(@RequestBody ClienteDeudorDto clienteDeudorDto) throws Exception {
         try {

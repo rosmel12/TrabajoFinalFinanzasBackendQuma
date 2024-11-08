@@ -157,7 +157,7 @@ private double calcularValorRecibido(Factura factura,Comision comision, double t
 
 ///calculamos el valor entregado o flujos
 private double calcularValorEntrego(Factura factura,Comision comision, double tep){
-    double valorEntrego=calcularValorNeto(factura,tep)+calcularCostesFinales(comision);
+    double valorEntrego=factura.getMontoTotal()+calcularCostesFinales(comision);
     BigDecimal montoRedondeado = BigDecimal.valueOf(valorEntrego).setScale(2, RoundingMode.HALF_UP);
     return montoRedondeado.doubleValue();
 }

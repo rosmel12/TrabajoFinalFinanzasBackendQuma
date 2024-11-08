@@ -153,6 +153,7 @@ public class CarteraTceaService {
             carteraTceaDto.setMontosNominales(carteraTcea.getMontosNominales());
             carteraTceaDto.setMontosDescontados(carteraTcea.getMontosDescontados());
             carteraTceaDto.setMontosRecibidos(carteraTcea.getMontosRecibidos());
+            carteraTceaDto.setMoneda(carteraTcea.getMoneda());
             carteraTceaDto.setFecha(carteraTcea.getFecha());
             carteraTceaDtos.add(carteraTceaDto);
         }

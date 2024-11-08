@@ -1,5 +1,6 @@
 package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
+import org.example.trabajofinalfinanzasbackend.dtos.ComisionDto;
 import org.example.trabajofinalfinanzasbackend.model.Comision;
 import org.example.trabajofinalfinanzasbackend.repositories.ComisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,17 @@ public String insertComision(Comision comision) {
 public Integer comisionId(String moneda){
 return comisionRepository.findComisionMoneda(moneda).getId();
 }
-public Comision comisionMoneda(String moneda){
-    return comisionRepository.findComisionMoneda(moneda);
+public ComisionDto comisionMoneda(String moneda){
+    Comision comision = comisionRepository.findComisionMoneda(moneda);
+    ComisionDto comisionDto = new ComisionDto();
+    comisionDto.setId(comision.getId());
+    comisionDto.setEstudioRiesgo(comision.getEstudioRiesgo());
+    comisionDto.setSeguroDesgravamen(comision.getSeguroDesgravamen());
+    comisionDto.setFotoCopias(comision.getFotoCopias());
+    comisionDto.setGastoAdministracion(comision.getGastoAdministracion());
+    comisionDto.setPorte(comision.getPorte());
+    comisionDto.setMoneda(comision.getMoneda());
+    return comisionDto ;
 }
 
 }

@@ -1,5 +1,6 @@
 package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
+import org.example.trabajofinalfinanzasbackend.dtos.CarteraTceaDto;
 import org.example.trabajofinalfinanzasbackend.model.CarteraTcea;
 import org.example.trabajofinalfinanzasbackend.model.ClienteProveedor;
 import org.example.trabajofinalfinanzasbackend.model.OperacionFactoring;
@@ -14,6 +15,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +29,7 @@ public class CarteraTceaService {
     public String insertarCarteraTcea(String ruc) {
 
         List<OperacionFactoring> flujos =operacionFactoringRepository.findOperacionesHoy(ruc);
-        if (!flujos.isEmpty()) {
+        if (flujos!=null) {
         double tir = calcularTIR(flujos);
         CarteraTcea tceadia= carteraTceaRepository.carteraTceaDia(ruc);
         ///verificamos la existencia de la cartera de un dia
@@ -61,7 +63,7 @@ public class CarteraTceaService {
 
         double tirLow = -1.0;    // Límite inferior de la TIR
         double tirHigh = 50.0;   //Límite superior de la TIR
-        double tolerance = 0.00000001;
+        double tolerance = 0.0000001;
 
         double tirMid =0;  // Punto medio de la TIR
         double van=-1 ;     // VAN en el punto medio
@@ -84,7 +86,7 @@ public class CarteraTceaService {
         }
         // Si el VAN está lo suficientemente cerca de cero, retorna el TIR actual
         BigDecimal tasaRedondeada = BigDecimal.valueOf(tirMid).setScale(9, RoundingMode.HALF_UP);
-        return tasaRedondeada.doubleValue();
+        return tirMid;
     }
 
     ///calculamos el van
@@ -115,6 +117,17 @@ public class CarteraTceaService {
         return inversion;
     }
 
-    public List<CarteraTcea> getCarteraTcea(String rucCliente){return carteraTceaRepository.findByRuc(rucCliente);}
+    public List<CarteraTceaDto> getCarteraTcea(String rucCliente){
+        List<CarteraTcea> carteraTceas=carteraTceaRepository.findByRuc(rucCliente);
+        List<CarteraTceaDto> carteraTceaDtos=new ArrayList<>();
+        for (CarteraTcea carteraTcea: carteraTceas){
+            CarteraTceaDto carteraTceaDto=new CarteraTceaDto();
+            carteraTceaDto.setId(carteraTcea.getId());
+            carteraTceaDto.setTcea(carteraTcea.getTcea());
+            carteraTceaDto.setFecha(carteraTcea.getFecha());
+            carteraTceaDtos.add(carteraTceaDto);
+        }
+        return carteraTceaDtos;
+    }
 
 }

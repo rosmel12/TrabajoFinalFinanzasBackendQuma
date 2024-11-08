@@ -163,8 +163,12 @@ private double calcularValorEntrego(Factura factura,Comision comision, double te
 }
 
 ///listar operacion por factura
-public OperacionFactoring listaroperacionPorFactura(Integer idFactura) {
-    return operacionFactoringRepository.operacionFactura(idFactura);
+public Boolean listaroperacionPorFactura(Integer idFactura) {
+    OperacionFactoring operacionFactoring= operacionFactoringRepository.operacionFactura(idFactura);
+    if(operacionFactoring!=null){
+        return true;
+    }
+    return false;
 }
 
 ///listar operacion por cliente

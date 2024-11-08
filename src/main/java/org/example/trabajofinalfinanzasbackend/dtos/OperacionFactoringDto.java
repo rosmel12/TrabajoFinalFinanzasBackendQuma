@@ -25,5 +25,6 @@ public class OperacionFactoringDto {
     private double valorNeto;
     private double valorRecibido;
     private double valorEntregado;
-
+    private Integer idFactura;
+    private Integer idDescuento;
 }

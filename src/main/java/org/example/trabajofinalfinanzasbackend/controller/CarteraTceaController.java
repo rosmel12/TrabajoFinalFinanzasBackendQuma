@@ -24,9 +24,7 @@ public class CarteraTceaController {
 
   @GetMapping("/usuario/listar/{ruc}")
     public List<CarteraTceaDto> listar(@PathVariable String ruc) {
-      ModelMapper modelMapper = new ModelMapper();
-      List<CarteraTcea> carteraTceas=carteraTceaService.getCarteraTcea(ruc);
-      return Arrays.asList(modelMapper.map(carteraTceas, CarteraTceaDto[].class));
+      return carteraTceaService.getCarteraTcea(ruc);
   }
 
 }

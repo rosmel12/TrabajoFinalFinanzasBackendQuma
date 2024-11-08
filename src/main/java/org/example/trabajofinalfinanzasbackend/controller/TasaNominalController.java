@@ -30,8 +30,6 @@ public class TasaNominalController {
 
     @GetMapping("/usuario/listar")
     public List<TasaNominalDto> listarTasaNominal(){
-        ModelMapper modelMapper = new ModelMapper();
-        List<TasaNominal> tasaNominals=tasaNominalService.listarTasaNominal();
-        return Arrays.asList(modelMapper.map(tasaNominals, TasaNominalDto[].class));
+        return tasaNominalService.listarTasaNominal();
     }
 }

@@ -25,8 +25,6 @@ public class TceaOperacionController {
     }
     @GetMapping("/usuario/tceaoperacionfactoring/{id}")
     public TceaOperacionDto getTceaOperacion(@PathVariable Integer id) {
-        ModelMapper modelMapper = new ModelMapper();
-        TceaOperacion tceaOperacion= tceaOperacionService.buscarTceaOperacion(id);
-        return modelMapper.map(tceaOperacion, TceaOperacionDto.class);
+        return tceaOperacionService.buscarTceaOperacion(id);
     }
 }

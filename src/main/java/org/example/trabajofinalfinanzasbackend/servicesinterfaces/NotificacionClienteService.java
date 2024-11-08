@@ -1,11 +1,13 @@
 package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
+import org.example.trabajofinalfinanzasbackend.dtos.NotificacionClienteDto;
 import org.example.trabajofinalfinanzasbackend.model.NotificacionCliente;
 import org.example.trabajofinalfinanzasbackend.model.OperacionFactoring;
 import org.example.trabajofinalfinanzasbackend.repositories.NotificacionClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,8 +34,17 @@ public String modificarEstadoNotificacionCliente( Integer id) {
   return "mensaje no encontrado";
 }
 
-public List<NotificacionCliente> listarNotificacionCliente(String ruc) {
-    return notificacionClienteRepository.listarNotificacionCliente(ruc);
+public List<NotificacionClienteDto> listarNotificacionCliente(String ruc) {
+    List<NotificacionCliente> notificacionClientes=notificacionClienteRepository.listarNotificacionCliente(ruc);
+    List<NotificacionClienteDto> notificacionClienteDtos=new ArrayList<>();
+    for (NotificacionCliente notificacionCliente : notificacionClientes) {
+        NotificacionClienteDto notificacionClienteDto=new NotificacionClienteDto();
+        notificacionClienteDto.setId(notificacionCliente.getId());
+        notificacionClienteDto.setMensaje(notificacionCliente.getMensaje());
+        notificacionClienteDto.setLeido(notificacionCliente.getLeido());
+        notificacionClienteDtos.add(notificacionClienteDto);
+    }
+    return notificacionClienteDtos;
 }
 
 }

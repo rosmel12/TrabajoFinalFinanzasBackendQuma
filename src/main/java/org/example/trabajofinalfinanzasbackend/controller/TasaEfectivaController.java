@@ -29,8 +29,6 @@ public class TasaEfectivaController {
     }
     @GetMapping("/usuario/listar")
     public List<TasaEfectivaDto> listartasa() {
-        ModelMapper modelMapper = new ModelMapper();
-        List<TasaEfectiva> tasaEfectivas=tasaEfectivaService.listarTasaEfectivas();
-        return Arrays.asList(modelMapper.map(tasaEfectivas, TasaEfectivaDto[].class));
+        return tasaEfectivaService.listarTasaEfectivas();
     }
 }

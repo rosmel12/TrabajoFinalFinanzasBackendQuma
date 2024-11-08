@@ -22,11 +22,9 @@ public class OperacionFactoringController {
         return  operacionFactoringService.insertarOperacion(operacionFactoringInsertarDto);
     }
 
-    @GetMapping("/usuario/facturaId/{id}")
-    public OperacionFactoringDto listarOperacionFactura(@PathVariable Integer id) {
-     ModelMapper modelMapper = new ModelMapper();
-     OperacionFactoring operacionFactoring=operacionFactoringService.listaroperacionPorFactura(id);
-     return modelMapper.map(operacionFactoring, OperacionFactoringDto.class);
+    @GetMapping("/usuario/verificar/{id}")
+    public Boolean listarOperacionFactura(@PathVariable Integer id) {
+     return operacionFactoringService.listaroperacionPorFactura(id);
     }
 
     @GetMapping("/usuario/operacionesusuario/{ruc}")

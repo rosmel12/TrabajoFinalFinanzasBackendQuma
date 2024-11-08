@@ -34,8 +34,6 @@ public class ComisionController {
 
     @GetMapping("/usuario/obtenido/{moneda}")
     public ComisionDto listarComision(@PathVariable String moneda){
-        ModelMapper modelMapper = new ModelMapper();
-        Comision comision=comisionService.comisionMoneda(moneda);
-        return modelMapper.map(comision, ComisionDto.class);
+        return comisionService.comisionMoneda(moneda);
     }
 }

@@ -1,5 +1,6 @@
 package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
+import org.example.trabajofinalfinanzasbackend.dtos.TceaOperacionDto;
 import org.example.trabajofinalfinanzasbackend.model.OperacionFactoring;
 import org.example.trabajofinalfinanzasbackend.model.TceaOperacion;
 import org.example.trabajofinalfinanzasbackend.repositories.TceaOperacionRepository;
@@ -32,7 +33,12 @@ public class TceaOperacionService {
        return tceaOperacionRepository.findAllByRucClienteProveedor(ruc);
     }
 
-    public TceaOperacion buscarTceaOperacion(Integer id) {
-        return tceaOperacionRepository.findbyIdOperacionFactoring(id);
+    public TceaOperacionDto buscarTceaOperacion(Integer id) {
+        TceaOperacion tceaOperacion = tceaOperacionRepository.findById(id).get();
+        TceaOperacionDto tceaOperacionDto=new TceaOperacionDto();
+        tceaOperacionDto.setId(tceaOperacion.getId());
+        tceaOperacionDto.setTcea(tceaOperacion.getTcea());
+        tceaOperacionDto.setFecha(tceaOperacion.getFecha());
+        return tceaOperacionDto;
     }
 }

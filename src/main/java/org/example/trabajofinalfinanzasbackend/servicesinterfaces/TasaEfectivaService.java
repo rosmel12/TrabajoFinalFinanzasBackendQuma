@@ -1,5 +1,6 @@
 package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
+import org.example.trabajofinalfinanzasbackend.dtos.TasaEfectivaDto;
 import org.example.trabajofinalfinanzasbackend.model.TasaEfectiva;
 import org.example.trabajofinalfinanzasbackend.repositories.TasaEfectivaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,18 @@ public class TasaEfectivaService {
          return "creado correctamente";
     }
 
-    public List<TasaEfectiva> listarTasaEfectivas() {
+    public List<TasaEfectivaDto> listarTasaEfectivas() {
         List<TasaEfectiva> tasaEfectivasAux = tasaEfectivaRepository.findAll();
-        List<TasaEfectiva> tasaEfectivas = new ArrayList<>();
+        List<TasaEfectivaDto> tasaEfectivas = new ArrayList<>();
         for (TasaEfectiva tasaEfectiva : tasaEfectivasAux) {
             if(tasaEfectiva.getFechaInicio().isBefore(LocalDateTime.now()) && tasaEfectiva.getFechaFin().isAfter(LocalDateTime.now()) ){
-                tasaEfectivas.add(tasaEfectiva);
+               TasaEfectivaDto tasaEfectivaDto= new TasaEfectivaDto();
+               tasaEfectivaDto.setId(tasaEfectiva.getId());
+               tasaEfectivaDto.setTasaInteres(tasaEfectiva.getTasaInteres());
+               tasaEfectivaDto.setPlazo(tasaEfectiva.getPlazo());
+               tasaEfectivaDto.setFechaInicio(tasaEfectiva.getFechaInicio());
+               tasaEfectivaDto.setFechaFin(tasaEfectiva.getFechaFin());
+               tasaEfectivas.add(tasaEfectivaDto);
             }
         }
         return tasaEfectivas;

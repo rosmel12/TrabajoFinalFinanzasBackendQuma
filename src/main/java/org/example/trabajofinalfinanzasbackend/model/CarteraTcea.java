@@ -18,19 +18,23 @@ public class CarteraTcea {
     @Column(name = "tcea", nullable = false)
     private double tcea;
 
-    @Column(name = "monto", nullable = false)
-    private double monto;
+    @Column(name = "cantidadOperaciones", nullable = false)
+    private double cantidadOperaciones;
+
+    @Column(name = "montosNominales", nullable = false)
+    private double montosNominales;
+
+    @Column(name = "montosDescontados", nullable = false)
+    private double montosDescontados;
+
+    @Column(name = "montosRecibidos", nullable = false)
+    private double montosRecibidos;
+
+    @Column(name="moneda",nullable = false)
+    private String moneda;
 
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public ClienteProveedor getProveedorCartera() {
         return proveedorCartera;
@@ -38,6 +42,14 @@ public class CarteraTcea {
 
     public void setProveedorCartera(ClienteProveedor proveedorCartera) {
         this.proveedorCartera = proveedorCartera;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 
     public LocalDateTime getFecha() {
@@ -48,12 +60,36 @@ public class CarteraTcea {
         this.fecha = fecha;
     }
 
-    public double getMonto() {
-        return monto;
+    public double getMontosRecibidos() {
+        return montosRecibidos;
     }
 
-    public void setMonto(double monto) {
-        this.monto = monto;
+    public void setMontosRecibidos(double montosRecibidos) {
+        this.montosRecibidos = montosRecibidos;
+    }
+
+    public double getMontosDescontados() {
+        return montosDescontados;
+    }
+
+    public void setMontosDescontados(double montosDescontados) {
+        this.montosDescontados = montosDescontados;
+    }
+
+    public double getMontosNominales() {
+        return montosNominales;
+    }
+
+    public void setMontosNominales(double montosNominales) {
+        this.montosNominales = montosNominales;
+    }
+
+    public double getCantidadOperaciones() {
+        return cantidadOperaciones;
+    }
+
+    public void setCantidadOperaciones(double cantidadOperaciones) {
+        this.cantidadOperaciones = cantidadOperaciones;
     }
 
     public double getTcea() {
@@ -62,6 +98,14 @@ public class CarteraTcea {
 
     public void setTcea(double tcea) {
         this.tcea = tcea;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     //relacion-cliente_proveeddor

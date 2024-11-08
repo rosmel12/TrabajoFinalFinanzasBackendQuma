@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 public class CarteraTceaDto {
     private Integer id;
     private double tcea;
+    private double cantidadOperaciones;
+    private double montosNominales;
+    private double montosDescontados;
+    private double montosRecibidos;
+    private String moneda;
     private LocalDateTime fecha;
 
     public Integer getId() {
@@ -30,6 +35,46 @@ public class CarteraTceaDto {
 
     public void setTcea(double tcea) {
         this.tcea = tcea;
+    }
+
+    public double getCantidadOperaciones() {
+        return cantidadOperaciones;
+    }
+
+    public void setCantidadOperaciones(double cantidadOperaciones) {
+        this.cantidadOperaciones = cantidadOperaciones;
+    }
+
+    public double getMontosNominales() {
+        return montosNominales;
+    }
+
+    public void setMontosNominales(double montosNominales) {
+        this.montosNominales = montosNominales;
+    }
+
+    public double getMontosDescontados() {
+        return montosDescontados;
+    }
+
+    public void setMontosDescontados(double montosDescontados) {
+        this.montosDescontados = montosDescontados;
+    }
+
+    public double getMontosRecibidos() {
+        return montosRecibidos;
+    }
+
+    public void setMontosRecibidos(double montosRecibidos) {
+        this.montosRecibidos = montosRecibidos;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 
     public LocalDateTime getFecha() {

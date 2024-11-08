@@ -26,9 +26,9 @@ public class CarteraTceaService {
     private ClienteProveedorRepository clienteProveedorRepository;
     @Autowired
     private OperacionFactoringRepository operacionFactoringRepository;
-    public String insertarCarteraTcea(String ruc) {
+    public String insertarCarteraTcea(String ruc, String moneda) {
 
-        List<OperacionFactoring> flujos =operacionFactoringRepository.findOperacionesHoy(ruc);
+        List<OperacionFactoring> flujos =operacionFactoringRepository.findOperacionesHoy(ruc,moneda);
         if (flujos!=null) {
         double tir = calcularTIR(flujos);
         CarteraTcea tceadia= carteraTceaRepository.carteraTceaDia(ruc);
@@ -38,19 +38,26 @@ public class CarteraTceaService {
             if (proveedor != null) {
                 CarteraTcea carteraTcea = new CarteraTcea();
                 carteraTcea.setTcea(tir);
+                carteraTcea.setCantidadOperaciones(flujos.size());
+                carteraTcea.setMontosNominales(sumaMontosNominales(flujos));
+                carteraTcea.setMontosDescontados(sumaMontosDescuentos(flujos));
+                carteraTcea.setMontosRecibidos(calcularInversion(flujos));
+                carteraTcea.setMoneda(moneda);
                 carteraTcea.setFecha(LocalDateTime.now());
-                carteraTcea.setMonto(calcularInversion(flujos));
                 carteraTcea.setProveedorCartera(proveedor);
                 carteraTceaRepository.save(carteraTcea);
             }
-            //return "se una nueva cartera de tcea del dia";
         }
         else {
             tceadia.setFecha(LocalDateTime.now());
-            tceadia.setMonto(calcularInversion(flujos));
             tceadia.setTcea(tir);
+            tceadia.setCantidadOperaciones(flujos.size());
+            tceadia.setMontosNominales(sumaMontosNominales(flujos));
+            tceadia.setMontosDescontados(sumaMontosDescuentos(flujos));
+            tceadia.setMontosRecibidos(calcularInversion(flujos));
+            tceadia.setMoneda(moneda);
+            tceadia.setFecha(LocalDateTime.now());
             carteraTceaRepository.save(tceadia);
-            //return "se modifico la cartera existente del dia";
         }
 
         return "TIR: " + tir;}
@@ -108,13 +115,31 @@ public class CarteraTceaService {
         return (int) ChronoUnit.DAYS.between(fechaInicio, fechaFin);
     }
 
-    ///calcular inversion que es la suma de los montos sin igv de la factura
+    ///calcular inversion o montos recibidos
     private double calcularInversion(List<OperacionFactoring> flujos ) {
         double inversion=0.0;
         for(OperacionFactoring flujo : flujos) {
             inversion += flujo.getValorRecibido();
         }
         return inversion;
+    }
+
+    ///calculasmos la suma de montos nominales
+    private double sumaMontosNominales(List<OperacionFactoring> flujos) {
+        double suma = 0;
+        for (OperacionFactoring operacionFactoring : flujos) {
+            suma +=operacionFactoring.getValorNominal();
+        }
+        return suma;
+    }
+
+    ///calculamos la suma de montos descontados
+    private double sumaMontosDescuentos(List<OperacionFactoring> flujos) {
+        double suma = 0;
+        for (OperacionFactoring operacionFactoring : flujos) {
+            suma+=operacionFactoring.getDescuento()+operacionFactoring.getCostesIniciales();
+        }
+        return suma;
     }
 
     public List<CarteraTceaDto> getCarteraTcea(String rucCliente){
@@ -124,6 +149,10 @@ public class CarteraTceaService {
             CarteraTceaDto carteraTceaDto=new CarteraTceaDto();
             carteraTceaDto.setId(carteraTcea.getId());
             carteraTceaDto.setTcea(carteraTcea.getTcea());
+            carteraTceaDto.setCantidadOperaciones(carteraTcea.getCantidadOperaciones());
+            carteraTceaDto.setMontosNominales(carteraTcea.getMontosNominales());
+            carteraTceaDto.setMontosDescontados(carteraTcea.getMontosDescontados());
+            carteraTceaDto.setMontosRecibidos(carteraTcea.getMontosRecibidos());
             carteraTceaDto.setFecha(carteraTcea.getFecha());
             carteraTceaDtos.add(carteraTceaDto);
         }

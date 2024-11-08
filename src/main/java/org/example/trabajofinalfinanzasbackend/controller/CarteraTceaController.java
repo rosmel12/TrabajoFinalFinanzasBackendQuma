@@ -19,7 +19,7 @@ public class CarteraTceaController {
 
   @PostMapping("/usuario/insertar/{ruc}")
     public String insertar(@PathVariable String ruc) {
-      return carteraTceaService.insertarCarteraTcea(ruc);
+      return carteraTceaService.insertarCarteraTcea(ruc,"PEN");
   }
 
   @GetMapping("/usuario/listar/{ruc}")

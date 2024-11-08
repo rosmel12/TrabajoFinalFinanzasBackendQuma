@@ -27,8 +27,9 @@ List<OperacionFactoring> operacionesCliente(@Param("ruc") String ruc);
 @Query(value = "SELECT ofc.*\n" +
         "FROM operacionfactoring ofc\n" +
         "JOIN factura fc ON ofc.id_factura = fc.id\n" +
-        "WHERE fc.ruc_cliente_proveedor =:ruc\n" +
-        "AND DATE(ofc.fecha_operacion) = DATE(DATE_SUB(CURDATE(), INTERVAL 5 HOUR))",nativeQuery = true)
-List<OperacionFactoring> findOperacionesHoy(@Param("ruc") String ruc);
+        "WHERE fc.ruc_cliente_proveedor=:ruc\n" +
+        "AND fc.moneda =:moneda\n" +
+        "AND DATE(ofc.fecha_operacion) = curdate();",nativeQuery = true)
+List<OperacionFactoring> findOperacionesHoy(@Param("ruc") String ruc, @Param("moneda") String moneda);
 
 }

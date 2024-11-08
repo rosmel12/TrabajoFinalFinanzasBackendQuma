@@ -14,7 +14,7 @@ public interface CarteraTceaRepository extends JpaRepository<CarteraTcea, Intege
     @Query(value = "select ct.*\n" +
             "from carteratcea ct\n" +
             "where ct.ruc_cliente=:ruc\n" +
-            "and date(ct.fecha)=date(date_sub(curdate(),interval 5 hour))",nativeQuery = true)
+            "and date(ct.fecha)=curdate()",nativeQuery = true)
      CarteraTcea carteraTceaDia(@Param("ruc")String ruc);
 
     @Query(value = "select ct.*\n" +

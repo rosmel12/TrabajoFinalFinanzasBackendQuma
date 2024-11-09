@@ -7,6 +7,8 @@ import org.example.trabajofinalfinanzasbackend.repositories.TceaOperacionReposit
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +28,8 @@ public class TceaOperacionService {
 
     private double calcularTceaOperacion(int diasFactura, double montoRecibido,double montoEntregado) {
         double tceaOperacion = (Math.pow(montoEntregado/montoRecibido, (double) 360/diasFactura))-1;
-        return tceaOperacion;
+        BigDecimal tceaRedondeado = BigDecimal.valueOf(tceaOperacion).setScale(9, RoundingMode.HALF_UP);
+        return tceaRedondeado.doubleValue();
     }
 
     public List<TceaOperacion> listarTceaOperacionUsuario(String ruc) {

@@ -26,6 +26,7 @@ public class CarteraTceaService {
     private ClienteProveedorRepository clienteProveedorRepository;
     @Autowired
     private OperacionFactoringRepository operacionFactoringRepository;
+
     public String insertarCarteraTcea(String ruc, String moneda) {
 
         List<OperacionFactoring> flujos =operacionFactoringRepository.findOperacionesHoy(ruc,moneda);
@@ -111,7 +112,6 @@ public class CarteraTceaService {
     ///Calculo de dias Factura
     private int calcularDias(LocalDate fechaFin) {
         LocalDate fechaInicio = LocalDate.now();
-        // Calculamos la diferencia en días
         return (int) ChronoUnit.DAYS.between(fechaInicio, fechaFin);
     }
 

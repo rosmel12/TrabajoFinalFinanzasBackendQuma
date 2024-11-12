@@ -88,10 +88,10 @@ public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactorin
 ///Calculo de dias Factura
 private int calcularDias(Factura factura) {
 /// Convertimos las fechas de Date a LocalDate
-//LocalDate fechaInicio = LocalDate.now();
+LocalDate fechaInicio = LocalDate.now();
 LocalDate fechaFin = LocalDate.from(factura.getFechaVencimiento());
 /// Calculamos la diferencia en días
-return  (int) ChronoUnit.DAYS.between(LocalDate.now(), fechaFin);
+return  (int) ChronoUnit.DAYS.between(fechaInicio, fechaFin);
 }
 
 ///Calculo las tasas a TEP

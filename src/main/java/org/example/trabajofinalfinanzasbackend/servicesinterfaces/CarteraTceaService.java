@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class CarteraTceaService {
                 carteraTcea.setMontosDescontados(sumaMontosDescuentos(flujos));
                 carteraTcea.setMontosRecibidos(calcularInversion(flujos));
                 carteraTcea.setMoneda(moneda);
-                carteraTcea.setFecha(LocalDateTime.now());
+                carteraTcea.setFecha(LocalDateTime.now(ZoneId.of("America/Lima")));
                 carteraTcea.setProveedorCartera(proveedor);
                 carteraTceaRepository.save(carteraTcea);
             }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class TceaOperacionService {
     public String IngresarTceaOperacion(OperacionFactoring operacionFactoring) {
         TceaOperacion tceaOperacion = new TceaOperacion();
         tceaOperacion.setTcea(calcularTceaOperacion(operacionFactoring.getNumeroDias(),operacionFactoring.getValorRecibido(),operacionFactoring.getValorEntregado()));
-        tceaOperacion.setFecha(LocalDateTime.now());
+        tceaOperacion.setFecha(LocalDateTime.now(ZoneId.of("America/Lima")));
         tceaOperacion.setTceaOperacionFactoring(operacionFactoring);
         tceaOperacionRepository.save(tceaOperacion);
         return "la tcea se agrego correctmente";

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactorin
         }
         ///creamos la operacion
         OperacionFactoring operacionFactoring = new OperacionFactoring();
-        operacionFactoring.setFechaOperacion(LocalDateTime.now());
+        operacionFactoring.setFechaOperacion(LocalDateTime.now(ZoneId.of("America/Lima")));
         operacionFactoring.setValorNominal(factura.getMontoTotal());
         operacionFactoring.setNumeroDias(diasFactura);
         operacionFactoring.setTasaEfectivaAplicada(tep);

@@ -35,8 +35,6 @@ private FacturaRepository facturaRepository;
 @Autowired
 private DescuentoRepository descuentoRepository;
 
-
-
  ///insertar operacion factoring
 public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactoringInsertarDto) {
    Factura factura=facturaRepository.findById(operacionFactoringInsertarDto.getIdFactura()).orElse(null);
@@ -65,7 +63,7 @@ public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactorin
         operacionFactoring.setCostesFinales(calcularCostesFinales(comision));
         operacionFactoring.setValorNeto(calcularValorNeto(factura,tep));
         operacionFactoring.setValorRecibido(calcularValorRecibido(factura,comision,tep));
-        operacionFactoring.setValorEntregado(calcularValorEntrego(factura,comision,tep));
+        operacionFactoring.setValorEntregado(calcularValorEntrego(factura,comision));
         operacionFactoring.setFacturaOperacion(factura);
         operacionFactoring.setDescuentoOperacion(descuento);
 
@@ -157,7 +155,7 @@ private double calcularValorRecibido(Factura factura,Comision comision, double t
 }
 
 ///calculamos el valor entregado o flujos
-private double calcularValorEntrego(Factura factura,Comision comision, double tep){
+private double calcularValorEntrego(Factura factura,Comision comision){
     double valorEntrego=factura.getMontoTotal()+calcularCostesFinales(comision);
     BigDecimal montoRedondeado = BigDecimal.valueOf(valorEntrego).setScale(2, RoundingMode.HALF_UP);
     return montoRedondeado.doubleValue();
@@ -166,10 +164,7 @@ private double calcularValorEntrego(Factura factura,Comision comision, double te
 ///listar operacion por factura
 public Boolean listaroperacionPorFactura(Integer idFactura) {
     OperacionFactoring operacionFactoring= operacionFactoringRepository.operacionFactura(idFactura);
-    if(operacionFactoring!=null){
-        return true;
-    }
-    return false;
+    return operacionFactoring != null;
 }
 
 ///listar operacion por cliente

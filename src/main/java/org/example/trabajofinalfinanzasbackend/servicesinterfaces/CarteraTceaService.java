@@ -73,16 +73,15 @@ public class CarteraTceaService {
         double tirLow = -1.0;    // Límite inferior de la TIR
         double tirHigh = 50.0;   //Límite superior de la TIR
         double tolerance = 0.0000001;
+        double tirMid =0.0;  // Punto medio de la TIR
+        double van=1.0 ;     // VAN en el punto medio
 
-        double tirMid =0;  // Punto medio de la TIR
-        double van=-1 ;     // VAN en el punto medio
-
-        while (Math.abs(van) >= tolerance) {
+        while (Math.abs(van) > tolerance) {
             tirMid = (tirLow + tirHigh) / 2;  // Calcular el punto medio
             van = calcularVAN(flujos, inversion, tirMid);  // Calcular el VAN con el TIR intermedio
 
             // Salida de depuración para cada iteración
-            System.out.println("tirMid: " + tirMid + ", VAN: " + van + ", tirLow: " + tirLow + ", tirHigh: " + tirHigh);
+            System.out.println("inversion: "+ inversion +" tirMid: " + tirMid + ", VAN: " + van + ", tirLow: " + tirLow + ", tirHigh: " + tirHigh);
 
             // Ajustar los límites del TIR en función del valor del VAN
             if (van > 0) {
@@ -95,7 +94,7 @@ public class CarteraTceaService {
         }
         // Si el VAN está lo suficientemente cerca de cero, retorna el TIR actual
         BigDecimal tasaRedondeada = BigDecimal.valueOf(tirMid).setScale(9, RoundingMode.HALF_UP);
-        return tirMid;
+        return tasaRedondeada.doubleValue();
     }
 
     ///calculamos el van
@@ -104,8 +103,9 @@ public class CarteraTceaService {
         for (OperacionFactoring flujo : flujos) {
             LocalDate fechaVencimiento = flujo.getFacturaOperacion().getFechaVencimiento();
             int dias= calcularDias(fechaVencimiento);
-            double flujoPago= flujo.getValorRecibido();
+            double flujoPago= flujo.getValorEntregado();
             van += flujoPago / Math.pow((1 + tir), (dias / 360.0));
+            System.out.println("dias: "+ dias +" flujoPago: "+flujoPago+" vanActual: "+van);
         }
         return van;
     }
@@ -136,11 +136,12 @@ public class CarteraTceaService {
 
     ///calculamos la suma de montos descontados
     private double sumaMontosDescuentos(List<OperacionFactoring> flujos) {
-        double suma = 0;
+        double suma = 0.0;
         for (OperacionFactoring operacionFactoring : flujos) {
-            suma+=operacionFactoring.getDescuento()+operacionFactoring.getCostesIniciales();
+            suma += operacionFactoring.getDescuento() + operacionFactoring.getCostesIniciales();
         }
-        return suma;
+        BigDecimal sumaRedondeado = BigDecimal.valueOf(suma).setScale(2, RoundingMode.HALF_UP);
+        return sumaRedondeado.doubleValue();
     }
 
     public List<CarteraTceaDto> getCarteraTcea(String rucCliente){

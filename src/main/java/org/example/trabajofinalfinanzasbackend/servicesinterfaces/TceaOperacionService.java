@@ -18,13 +18,12 @@ public class TceaOperacionService {
     @Autowired
     private TceaOperacionRepository tceaOperacionRepository;
 
-    public String IngresarTceaOperacion(OperacionFactoring operacionFactoring) {
+    public void IngresarTceaOperacion(OperacionFactoring operacionFactoring) {
         TceaOperacion tceaOperacion = new TceaOperacion();
         tceaOperacion.setTcea(calcularTceaOperacion(operacionFactoring.getNumeroDias(),operacionFactoring.getValorRecibido(),operacionFactoring.getValorEntregado()));
         tceaOperacion.setFecha(LocalDateTime.now(ZoneId.of("America/Lima")));
         tceaOperacion.setTceaOperacionFactoring(operacionFactoring);
         tceaOperacionRepository.save(tceaOperacion);
-        return "la tcea se agrego correctmente";
     }
 
     private double calcularTceaOperacion(int diasFactura, double montoRecibido,double montoEntregado) {
@@ -38,11 +37,14 @@ public class TceaOperacionService {
     }
 
     public TceaOperacionDto buscarTceaOperacion(Integer id) {
-        TceaOperacion tceaOperacion = tceaOperacionRepository.findById(id).get();
-        TceaOperacionDto tceaOperacionDto=new TceaOperacionDto();
-        tceaOperacionDto.setId(tceaOperacion.getId());
-        tceaOperacionDto.setTcea(tceaOperacion.getTcea());
-        tceaOperacionDto.setFecha(tceaOperacion.getFecha());
-        return tceaOperacionDto;
+        TceaOperacion tceaOperacion = tceaOperacionRepository.findById(id).orElse(null);
+        if (tceaOperacion != null) {
+            TceaOperacionDto tceaOperacionDto=new TceaOperacionDto();
+            tceaOperacionDto.setId(tceaOperacion.getId());
+            tceaOperacionDto.setTcea(tceaOperacion.getTcea());
+            tceaOperacionDto.setFecha(tceaOperacion.getFecha());
+            return tceaOperacionDto;
+        }
+        return null;
     }
 }

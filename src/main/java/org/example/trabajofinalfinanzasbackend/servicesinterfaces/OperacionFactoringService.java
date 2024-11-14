@@ -44,13 +44,16 @@ public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactorin
         Comision comision= descuento.getComisionDescuento();
         TasaNominal tasaNominal= descuento.getTasaNominalDescuento();
         TasaEfectiva tasaEfectiva= descuento.getTasaEfectivaDescuento();
+
         int diasFactura=calcularDias(factura);
         double tep=0.0;
+
         if (tasaEfectiva != null) {
             tep=convertirTasaEfectivaEfectiva(tasaEfectiva, diasFactura);
         } else if (tasaNominal != null) {
             tep=convertirTasaNominalEfectiva(tasaNominal, diasFactura);
         }
+
         ///creamos la operacion
         OperacionFactoring operacionFactoring = new OperacionFactoring();
         operacionFactoring.setFechaOperacion(LocalDateTime.now(ZoneId.of("America/Lima")));

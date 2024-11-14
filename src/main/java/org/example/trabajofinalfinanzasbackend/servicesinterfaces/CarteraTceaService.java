@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,36 +32,41 @@ public class CarteraTceaService {
     public String insertarCarteraTcea(String ruc, String moneda) {
 
         List<OperacionFactoring> flujos =operacionFactoringRepository.findOperacionesHoy(ruc,moneda);
-        if (flujos!=null) {
-        double tir = calcularTIR(flujos);
-        CarteraTcea tceadia= carteraTceaRepository.carteraTceaDia(ruc);
-        ///verificamos la existencia de la cartera de un dia
-        if(tceadia==null){
-            ClienteProveedor proveedor = clienteProveedorRepository.findById(ruc).orElse(null);
-            if (proveedor != null) {
-                CarteraTcea carteraTcea = new CarteraTcea();
-                carteraTcea.setTcea(tir);
-                carteraTcea.setCantidadOperaciones(flujos.size());
-                carteraTcea.setMontosNominales(sumaMontosNominales(flujos));
-                carteraTcea.setMontosDescontados(sumaMontosDescuentos(flujos));
-                carteraTcea.setMontosRecibidos(calcularInversion(flujos));
-                carteraTcea.setMoneda(moneda);
-                carteraTcea.setFecha(LocalDateTime.now(ZoneId.of("America/Lima")));
-                carteraTcea.setProveedorCartera(proveedor);
-                carteraTceaRepository.save(carteraTcea);
+        List<OperacionFactoring> flujosHoy = new ArrayList<>();
+        for (OperacionFactoring factoring : flujos) {
+            if (factoring.getFechaOperacion().toLocalDate().equals(LocalDate.now())) {
+                flujosHoy.add(factoring);
             }
         }
-        else {
-            tceadia.setFecha(LocalDateTime.now());
-            tceadia.setTcea(tir);
-            tceadia.setCantidadOperaciones(flujos.size());
-            tceadia.setMontosNominales(sumaMontosNominales(flujos));
-            tceadia.setMontosDescontados(sumaMontosDescuentos(flujos));
-            tceadia.setMontosRecibidos(calcularInversion(flujos));
-            tceadia.setMoneda(moneda);
-            tceadia.setFecha(LocalDateTime.now());
-            carteraTceaRepository.save(tceadia);
-        }
+        if (!flujosHoy.isEmpty()) {
+        double tir = calcularTIR(flujosHoy);
+        CarteraTcea tceadia= carteraTceaRepository.carteraTceaDia(ruc,moneda);
+        ///verificamos la existencia de la cartera de un dia
+            if(tceadia!=null && tceadia.getFecha().toLocalDate().equals(LocalDate.now())){
+                tceadia.setFecha(LocalDateTime.now());
+                tceadia.setTcea(tir);
+                tceadia.setCantidadOperaciones(flujos.size());
+                tceadia.setMontosNominales(sumaMontosNominales(flujosHoy));
+                tceadia.setMontosDescontados(sumaMontosDescuentos(flujosHoy));
+                tceadia.setMontosRecibidos(calcularInversion(flujosHoy));
+                tceadia.setMoneda(moneda);
+                tceadia.setFecha(LocalDateTime.now());
+                carteraTceaRepository.save(tceadia);
+            }else{
+                ClienteProveedor proveedor = clienteProveedorRepository.findById(ruc).orElse(null);
+                if (proveedor != null) {
+                    CarteraTcea carteraTcea = new CarteraTcea();
+                    carteraTcea.setTcea(tir);
+                    carteraTcea.setCantidadOperaciones(flujos.size());
+                    carteraTcea.setMontosNominales(sumaMontosNominales(flujosHoy));
+                    carteraTcea.setMontosDescontados(sumaMontosDescuentos(flujosHoy));
+                    carteraTcea.setMontosRecibidos(calcularInversion(flujosHoy));
+                    carteraTcea.setMoneda(moneda);
+                    carteraTcea.setFecha(LocalDateTime.now(ZoneId.of("America/Lima")));
+                    carteraTcea.setProveedorCartera(proveedor);
+                    carteraTceaRepository.save(carteraTcea);
+                }
+            }
 
         return "TIR: " + tir;}
         return "no se puedo encontrar flujos";
@@ -72,7 +78,7 @@ public class CarteraTceaService {
 
         double tirLow = -1.0;    // Límite inferior de la TIR
         double tirHigh = 50.0;   //Límite superior de la TIR
-        double tolerance = 0.0000001;
+        double tolerance = 0.00001;
         double tirMid =0.0;  // Punto medio de la TIR
         double van=1.0 ;     // VAN en el punto medio
 

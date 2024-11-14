@@ -18,17 +18,14 @@ import java.util.List;
 @Service
 public class DescuentoService {
 
-    private final DescuentoRepository descuentoRepository;
-    private final ComisionRepository comisionRepository;
-    private final TasaNominalRepository tasaNominalRepository;
-    private final TasaEfectivaRepository tasaEfectivaRepository;
-
-    private DescuentoService(DescuentoRepository descuentoRepository, ComisionRepository comisionRepository, TasaNominalRepository tasaNominalRepository, TasaEfectivaRepository tasaEfectivaRepository) {
-        this.descuentoRepository = descuentoRepository;
-        this.comisionRepository = comisionRepository;
-        this.tasaNominalRepository = tasaNominalRepository;
-        this.tasaEfectivaRepository = tasaEfectivaRepository;
-    }
+    @Autowired
+    private DescuentoRepository descuentoRepository;
+    @Autowired
+    private ComisionRepository comisionRepository;
+    @Autowired
+    private TasaNominalRepository tasaNominalRepository;
+    @Autowired
+    private TasaEfectivaRepository tasaEfectivaRepository;
 
     public Integer insertDescuento(DescuentoDto descuentoDto, Descuento descuento) {
         Comision comision =comisionRepository.findById(descuentoDto.getIdComision()).orElse(null) ;

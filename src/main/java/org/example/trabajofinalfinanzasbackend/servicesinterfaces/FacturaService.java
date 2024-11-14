@@ -7,6 +7,7 @@ import org.example.trabajofinalfinanzasbackend.model.Factura;
 import org.example.trabajofinalfinanzasbackend.repositories.ClienteDeudorRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.ClienteProveedorRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.FacturaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,16 +17,12 @@ import java.util.List;
 
 @Service
 public class FacturaService {
-
-    private final FacturaRepository facturaRepository;
-    private final ClienteDeudorRepository deudorRepository;
-    private final ClienteProveedorRepository proveedorRepository;
-
-    private FacturaService(FacturaRepository facturaRepository, ClienteDeudorRepository deudorRepository, ClienteProveedorRepository proveedorRepository) {
-        this.facturaRepository = facturaRepository;
-        this.deudorRepository = deudorRepository;
-        this.proveedorRepository = proveedorRepository;
-    }
+    @Autowired
+    private FacturaRepository facturaRepository;
+    @Autowired
+    private ClienteDeudorRepository deudorRepository;
+    @Autowired
+    private ClienteProveedorRepository proveedorRepository;
 
     public Integer insertarFactura(FacturaDto facturaDto, Factura factura) {
         ClienteProveedor clienteProveedor = proveedorRepository.findById(facturaDto.getRucClienteProveedor()).orElse(null);

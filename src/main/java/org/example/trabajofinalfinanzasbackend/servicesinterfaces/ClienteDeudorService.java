@@ -2,18 +2,15 @@ package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
 import org.example.trabajofinalfinanzasbackend.model.ClienteDeudor;
 import org.example.trabajofinalfinanzasbackend.repositories.ClienteDeudorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ClienteDeudorService {
-
-    private final ClienteDeudorRepository clienteDeudorRepository;
-
-    private ClienteDeudorService(ClienteDeudorRepository clienteDeudorRepository) {
-        this.clienteDeudorRepository = clienteDeudorRepository;
-    }
+    @Autowired
+    private ClienteDeudorRepository clienteDeudorRepository;
 
     public String insertarClienteDeudor(ClienteDeudor clienteDeudor) {
         ClienteDeudor cliente =clienteDeudorRepository.findById(clienteDeudor.getRuc()).orElse(null);

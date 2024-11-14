@@ -2,18 +2,16 @@ package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 
 import org.example.trabajofinalfinanzasbackend.model.Usuario;
 import org.example.trabajofinalfinanzasbackend.repositories.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class UsuarioService {
-
-    private final UsuarioRepository usuarioRepository;
-
-    private UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public Integer agregarUsuario(Usuario usuario) {
         Usuario usuarioComprobar=usuarioRepository.findUsuarioByUsername(usuario.getUsername());

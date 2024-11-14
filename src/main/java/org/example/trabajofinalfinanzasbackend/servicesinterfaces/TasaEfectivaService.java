@@ -3,6 +3,7 @@ package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 import org.example.trabajofinalfinanzasbackend.dtos.TasaEfectivaDto;
 import org.example.trabajofinalfinanzasbackend.model.TasaEfectiva;
 import org.example.trabajofinalfinanzasbackend.repositories.TasaEfectivaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,12 +12,8 @@ import java.util.List;
 
 @Service
 public class TasaEfectivaService {
-
-    private final TasaEfectivaRepository tasaEfectivaRepository;
-
-    private TasaEfectivaService(TasaEfectivaRepository tasaEfectivaRepository) {
-        this.tasaEfectivaRepository = tasaEfectivaRepository;
-    }
+    @Autowired
+    private TasaEfectivaRepository tasaEfectivaRepository;
 
     public String insertarTasaEfectiva(TasaEfectiva tasaEfectiva) {
          tasaEfectivaRepository.save(tasaEfectiva);

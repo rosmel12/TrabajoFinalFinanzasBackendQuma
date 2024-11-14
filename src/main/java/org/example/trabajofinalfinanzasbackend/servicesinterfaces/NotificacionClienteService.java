@@ -4,6 +4,7 @@ import org.example.trabajofinalfinanzasbackend.dtos.NotificacionClienteDto;
 import org.example.trabajofinalfinanzasbackend.model.NotificacionCliente;
 import org.example.trabajofinalfinanzasbackend.model.OperacionFactoring;
 import org.example.trabajofinalfinanzasbackend.repositories.NotificacionClienteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,12 +12,8 @@ import java.util.List;
 
 @Service
 public class NotificacionClienteService {
-
-private final NotificacionClienteRepository notificacionClienteRepository;
-
-private NotificacionClienteService(NotificacionClienteRepository notificacionClienteRepository) {
-    this.notificacionClienteRepository = notificacionClienteRepository;
-}
+@Autowired
+private NotificacionClienteRepository notificacionClienteRepository;
 
 public void enviarNotificacionCliente(OperacionFactoring operacionFactoring) {
  NotificacionCliente notificacionCliente = new NotificacionCliente();

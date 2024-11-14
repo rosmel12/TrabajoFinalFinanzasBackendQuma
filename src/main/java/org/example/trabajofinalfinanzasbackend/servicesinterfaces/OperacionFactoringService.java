@@ -6,6 +6,7 @@ import org.example.trabajofinalfinanzasbackend.repositories.DescuentoRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.FacturaRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.OperacionFactoringRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.PeriodoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,24 +20,22 @@ import java.util.List;
 @Service
 public class OperacionFactoringService {
 
-    private final OperacionFactoringRepository operacionFactoringRepository;
-private final PeriodoRepository periodoRepository;
-private final TceaOperacionService tceaOperacionService;
-private final NotificacionClienteService notificacionClienteService;
-private final CarteraTceaService carteraTceaService;
-private final FacturaRepository facturaRepository;
-private final DescuentoRepository descuentoRepository;
-private OperacionFactoringService(OperacionFactoringRepository operacionFactoringRepository, PeriodoRepository periodoRepository, TceaOperacionService tceaOperacionService, NotificacionClienteService notificacionClienteService, FacturaRepository facturaRepository, DescuentoRepository descuentoRepository, CarteraTceaService carteraTceaService) {
-        this.operacionFactoringRepository = operacionFactoringRepository;
-        this.periodoRepository = periodoRepository;
-        this.tceaOperacionService = tceaOperacionService;
-        this.notificacionClienteService = notificacionClienteService;
-        this.facturaRepository = facturaRepository;
-        this.descuentoRepository = descuentoRepository;
-        this.carteraTceaService = carteraTceaService;
-    }
+@Autowired
+private OperacionFactoringRepository operacionFactoringRepository;
+@Autowired
+private PeriodoRepository periodoRepository;
+@Autowired
+private TceaOperacionService tceaOperacionService;
+@Autowired
+private NotificacionClienteService notificacionClienteService;
+@Autowired
+private CarteraTceaService carteraTceaService;
+@Autowired
+private FacturaRepository facturaRepository;
+@Autowired
+private DescuentoRepository descuentoRepository;
 
-///insertar operacion factoring
+ ///insertar operacion factoring
 public Integer insertarOperacion(OperacionFactoringInsertarDto operacionFactoringInsertarDto) {
    Factura factura=facturaRepository.findById(operacionFactoringInsertarDto.getIdFactura()).orElse(null);
    Descuento  descuento=descuentoRepository.findById(operacionFactoringInsertarDto.getIdDescuento()).orElse(null);

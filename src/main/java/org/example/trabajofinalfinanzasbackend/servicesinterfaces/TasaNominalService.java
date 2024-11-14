@@ -3,6 +3,7 @@ package org.example.trabajofinalfinanzasbackend.servicesinterfaces;
 import org.example.trabajofinalfinanzasbackend.dtos.TasaNominalDto;
 import org.example.trabajofinalfinanzasbackend.model.TasaNominal;
 import org.example.trabajofinalfinanzasbackend.repositories.TasaNominalRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,14 +12,10 @@ import java.util.List;
 
 @Service
 public class TasaNominalService {
+@Autowired
+private TasaNominalRepository TasaNominalRepository;
 
-private final TasaNominalRepository TasaNominalRepository;
-
-    private TasaNominalService(org.example.trabajofinalfinanzasbackend.repositories.TasaNominalRepository tasaNominalRepository) {
-        TasaNominalRepository = tasaNominalRepository;
-    }
-
-    public String insertarTasaNominal(TasaNominal TasaNominal) {
+public String insertarTasaNominal(TasaNominal TasaNominal) {
     TasaNominalRepository.save(TasaNominal);
     return "creado correctamente";
 }

@@ -4,6 +4,7 @@ import org.example.trabajofinalfinanzasbackend.dtos.TceaOperacionDto;
 import org.example.trabajofinalfinanzasbackend.model.OperacionFactoring;
 import org.example.trabajofinalfinanzasbackend.model.TceaOperacion;
 import org.example.trabajofinalfinanzasbackend.repositories.TceaOperacionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,12 +15,8 @@ import java.util.List;
 
 @Service
 public class TceaOperacionService {
-
-    private final TceaOperacionRepository tceaOperacionRepository;
-
-    private TceaOperacionService(TceaOperacionRepository tceaOperacionRepository) {
-        this.tceaOperacionRepository = tceaOperacionRepository;
-    }
+    @Autowired
+    private TceaOperacionRepository tceaOperacionRepository;
 
     public void IngresarTceaOperacion(OperacionFactoring operacionFactoring) {
         TceaOperacion tceaOperacion = new TceaOperacion();

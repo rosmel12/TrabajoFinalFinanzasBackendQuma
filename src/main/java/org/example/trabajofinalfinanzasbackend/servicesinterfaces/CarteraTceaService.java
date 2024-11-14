@@ -127,7 +127,8 @@ public class CarteraTceaService {
         for(OperacionFactoring flujo : flujos) {
             inversion += flujo.getValorRecibido();
         }
-        return inversion;
+        BigDecimal sumaRedondeada = BigDecimal.valueOf(inversion).setScale(2, RoundingMode.HALF_UP);
+        return sumaRedondeada.doubleValue();
     }
 
     ///calculasmos la suma de montos nominales
@@ -136,7 +137,8 @@ public class CarteraTceaService {
         for (OperacionFactoring operacionFactoring : flujos) {
             suma +=operacionFactoring.getValorNominal();
         }
-        return suma;
+        BigDecimal sumaRedondeada = BigDecimal.valueOf(suma).setScale(2, RoundingMode.HALF_UP);
+        return sumaRedondeada.doubleValue();
     }
 
     ///calculamos la suma de montos descontados

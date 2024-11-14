@@ -17,10 +17,7 @@ public class CarteraTceaController {
     @Autowired
     private CarteraTceaService carteraTceaService;
 
-  @PostMapping("/usuario/insertar/{ruc}")
-    public String insertar(@PathVariable String ruc) {
-      return carteraTceaService.insertarCarteraTcea(ruc,"PEN");
-  }
+
 
   @GetMapping("/usuario/listar/{ruc}")
     public List<CarteraTceaDto> listar(@PathVariable String ruc) {

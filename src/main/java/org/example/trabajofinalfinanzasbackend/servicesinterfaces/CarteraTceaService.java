@@ -7,12 +7,10 @@ import org.example.trabajofinalfinanzasbackend.model.OperacionFactoring;
 import org.example.trabajofinalfinanzasbackend.repositories.CarteraTceaRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.ClienteProveedorRepository;
 import org.example.trabajofinalfinanzasbackend.repositories.OperacionFactoringRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,12 +20,16 @@ import java.util.List;
 
 @Service
 public class CarteraTceaService {
-    @Autowired
-    private CarteraTceaRepository carteraTceaRepository;
-    @Autowired
-    private ClienteProveedorRepository clienteProveedorRepository;
-    @Autowired
-    private OperacionFactoringRepository operacionFactoringRepository;
+
+    private final CarteraTceaRepository carteraTceaRepository;
+    private final ClienteProveedorRepository clienteProveedorRepository;
+    private final OperacionFactoringRepository operacionFactoringRepository;
+
+    private CarteraTceaService(CarteraTceaRepository carteraTceaRepository, ClienteProveedorRepository clienteProveedorRepository, OperacionFactoringRepository operacionFactoringRepository) {
+        this.carteraTceaRepository = carteraTceaRepository;
+        this.clienteProveedorRepository = clienteProveedorRepository;
+        this.operacionFactoringRepository = operacionFactoringRepository;
+    }
 
     public String insertarCarteraTcea(String ruc, String moneda) {
 

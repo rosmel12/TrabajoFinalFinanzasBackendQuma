@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClienteProveedorService {
-    @Autowired
+
     private ClienteProveedorRepository clienteProveedorRepository;
-    @Autowired
     private UsuarioRepository usuarioRepository;
 
     public String insertarCliente(ClienteProveedorDto clienteProveedorDto, ClienteProveedor clienteProveedor) {

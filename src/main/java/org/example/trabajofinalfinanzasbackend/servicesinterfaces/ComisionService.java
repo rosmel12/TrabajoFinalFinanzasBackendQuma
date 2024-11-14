@@ -8,17 +8,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ComisionService {
-@Autowired
-    private ComisionRepository comisionRepository;
 
-public String insertComision(Comision comision) {
+    private final ComisionRepository comisionRepository;
+
+    private ComisionService(ComisionRepository comisionRepository) {
+        this.comisionRepository = comisionRepository;
+    }
+
+    public String insertComision(Comision comision) {
      comisionRepository.save(comision);
     return " se agrego la comision";
 }
-public Integer comisionId(String moneda){
+
+    public Integer comisionId(String moneda){
 return comisionRepository.findComisionMoneda(moneda).getId();
 }
-public ComisionDto comisionMoneda(String moneda){
+
+    public ComisionDto comisionMoneda(String moneda){
     Comision comision = comisionRepository.findComisionMoneda(moneda);
     ComisionDto comisionDto = new ComisionDto();
     comisionDto.setId(comision.getId());

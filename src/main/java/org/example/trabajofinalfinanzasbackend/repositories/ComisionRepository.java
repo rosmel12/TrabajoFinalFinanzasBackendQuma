@@ -11,5 +11,5 @@ public interface ComisionRepository extends JpaRepository<Comision, Integer> {
     @Query(value = "select *\n" +
             "from comision c\n" +
             "where c.moneda=:moneda",nativeQuery = true)
-    public Comision findComisionMoneda(@Param("moneda") String moneda);
+    Comision findComisionMoneda(@Param("moneda") String moneda);
 }

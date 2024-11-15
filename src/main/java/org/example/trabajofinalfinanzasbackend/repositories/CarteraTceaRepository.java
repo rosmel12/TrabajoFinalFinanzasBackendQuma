@@ -15,7 +15,7 @@ public interface CarteraTceaRepository extends JpaRepository<CarteraTcea, Intege
             "from carteratcea ct\n" +
             "where ct.ruc_cliente=:ruc\n" +
             "and ct.moneda=:moneda",nativeQuery = true)
-     CarteraTcea carteraTceaDia(@Param("ruc")String ruc, @Param("moneda") String moneda);
+     List<CarteraTcea> carteraTceaDia(@Param("ruc")String ruc, @Param("moneda") String moneda);
 
     @Query(value = "select ct.*\n" +
             "from carteratcea ct\n" +

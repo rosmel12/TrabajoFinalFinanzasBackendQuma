@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,35 +39,42 @@ public class CarteraTceaService {
         }
         if (!flujosHoy.isEmpty()) {
         double tir = calcularTIR(flujosHoy);
-        CarteraTcea tceadia= carteraTceaRepository.carteraTceaDia(ruc,moneda);
+        List<CarteraTcea> tcea= carteraTceaRepository.carteraTceaDia(ruc,moneda);
+        CarteraTcea carteraTceaHoy = null;
         ///verificamos la existencia de la cartera de un dia
-            if(tceadia!=null && tceadia.getFecha().toLocalDate().equals(LocalDate.now())){
-                tceadia.setFecha(LocalDateTime.now());
-                tceadia.setTcea(tir);
-                tceadia.setCantidadOperaciones(flujos.size());
-                tceadia.setMontosNominales(sumaMontosNominales(flujosHoy));
-                tceadia.setMontosDescontados(sumaMontosDescuentos(flujosHoy));
-                tceadia.setMontosRecibidos(calcularInversion(flujosHoy));
-                tceadia.setMoneda(moneda);
-                tceadia.setFecha(LocalDateTime.now());
-                carteraTceaRepository.save(tceadia);
-            }else{
-                ClienteProveedor proveedor = clienteProveedorRepository.findById(ruc).orElse(null);
-                if (proveedor != null) {
-                    CarteraTcea carteraTcea = new CarteraTcea();
-                    carteraTcea.setTcea(tir);
-                    carteraTcea.setCantidadOperaciones(flujos.size());
-                    carteraTcea.setMontosNominales(sumaMontosNominales(flujosHoy));
-                    carteraTcea.setMontosDescontados(sumaMontosDescuentos(flujosHoy));
-                    carteraTcea.setMontosRecibidos(calcularInversion(flujosHoy));
-                    carteraTcea.setMoneda(moneda);
-                    carteraTcea.setFecha(LocalDateTime.now());
-                    carteraTcea.setProveedorCartera(proveedor);
-                    carteraTceaRepository.save(carteraTcea);
-                }
+        for (CarteraTcea tceadia : tcea) {
+            if (tceadia.getFecha().toLocalDate().equals(LocalDate.now())){
+                carteraTceaHoy=tceadia;
+                break;
             }
-
-        return "TIR: " + tir;}
+        }
+        if (carteraTceaHoy !=null && carteraTceaHoy.getFecha().toLocalDate().equals(LocalDate.now())) {
+            carteraTceaHoy.setFecha(LocalDateTime.now());
+            carteraTceaHoy.setTcea(tir);
+            carteraTceaHoy.setCantidadOperaciones(flujosHoy.size());
+            carteraTceaHoy.setMontosNominales(sumaMontosNominales(flujosHoy));
+            carteraTceaHoy.setMontosDescontados(sumaMontosDescuentos(flujosHoy));
+            carteraTceaHoy.setMontosRecibidos(calcularInversion(flujosHoy));
+            carteraTceaHoy.setMoneda(moneda);
+            carteraTceaHoy.setFecha(LocalDateTime.now(ZoneId.of("America/Lima")));
+            carteraTceaRepository.save(carteraTceaHoy);
+        } else {
+            ClienteProveedor proveedor = clienteProveedorRepository.findById(ruc).orElse(null);
+            if (proveedor != null) {
+                CarteraTcea carteraTcea = new CarteraTcea();
+                carteraTcea.setTcea(tir);
+                carteraTcea.setCantidadOperaciones(flujosHoy.size());
+                carteraTcea.setMontosNominales(sumaMontosNominales(flujosHoy));
+                carteraTcea.setMontosDescontados(sumaMontosDescuentos(flujosHoy));
+                carteraTcea.setMontosRecibidos(calcularInversion(flujosHoy));
+                carteraTcea.setMoneda(moneda);
+                carteraTcea.setFecha(LocalDateTime.now(ZoneId.of("America/Lima")));
+                carteraTcea.setProveedorCartera(proveedor);
+                carteraTceaRepository.save(carteraTcea);
+            }
+        }
+        return "TIR: " + tir;
+        }
         return "no se puedo encontrar flujos";
     }
 
@@ -109,7 +117,6 @@ public class CarteraTceaService {
             int dias= calcularDias(fechaVencimiento);
             double flujoPago= flujo.getValorEntregado();
             van += flujoPago / Math.pow((1 + tir), (dias / 360.0));
-            System.out.println("dias: "+ dias +" flujoPago: "+flujoPago+" vanActual: "+van);
         }
         return van;
     }
